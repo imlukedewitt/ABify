@@ -2,13 +2,15 @@
 
 require_relative 'customers/create_customers'
 require_relative 'components/create_components'
+require_relative 'subscriptions/create_subscriptions'
 
 # Simple workflow initializer
 module BuildWorkflow
   WORKFLOWS = {
     # placeholder naming convention
     'createCustomers' => CreateCustomers,
-    'createComponents' => CreateComponents
+    'createComponents' => CreateComponents,
+    'createSubscriptions' => CreateSubscriptions
   }.freeze
 
   def self.for(name)
