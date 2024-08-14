@@ -11,7 +11,7 @@ module StringUtils
   end
 
   def blank?(value)
-    value.nil? || value.strip.empty?
+    value.nil? || value.to_s.strip.empty?
   end
 
   def present?(value)
