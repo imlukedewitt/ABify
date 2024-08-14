@@ -18,7 +18,7 @@ class HydraLogger
       @max_row_idx = [@max_row_idx, row_idx].max
     end
 
-    console_log(row_count)
+    console_log(row_count) unless ENV['RUNNING_ON_SERVER']
     file_log(response, row_idx, step_name)
   end
 
