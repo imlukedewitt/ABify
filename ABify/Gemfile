@@ -1,0 +1,16 @@
+# frozen_string_literal: true
+
+source 'https://rubygems.org'
+
+gem 'csv'
+gem 'dotenv'
+gem 'faker'
+gem 'ffi', '1.17.0'
+gem 'google-cloud-firestore'
+gem 'json'
+gem 'pry'
+gem 'redis'
+gem 'rubocop'
+gem 'sinatra'
+gem 'thin', '1.8.2'
+gem 'typhoeus'

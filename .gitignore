@@ -1,0 +1,15 @@
+**/.vscode
+**/.DS_Store
+*config.json
+*.clasp.json
+*.code-workspace
+**/data/**
+**/log/**
+**/out/**
+**/data
+**/log
+**/out
+**/config/**
+**/.clasp.json
+**/.env
+**/Gemfile.lock
