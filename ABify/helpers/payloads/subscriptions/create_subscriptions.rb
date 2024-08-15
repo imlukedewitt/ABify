@@ -84,11 +84,14 @@ module Payloads
         component = {
           component_id: "handle:#{row["component #{idx}"]}",
           allocated_quantity: quantity,
-          unit_balance: quantity,
-          price_point_id: price_point
+          unit_balance: quantity
         }
 
-        component[:custom_price] = custom_price(row, i) if row["component custom price scheme #{idx}"]
+        if present?(custom_price_scheme)
+          component[:custom_price] = custom_price(row, idx)
+        else
+          component[:price_point] = price_point
+        end
 
         component
       end
