@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require_relative '../../payloads/subscriptions/create_subscriptions'
+require_relative '../../../payloads/subscriptions/create_subscriptions'
 
 RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
   include FactoryBot::Syntax::Methods
