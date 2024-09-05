@@ -108,13 +108,13 @@ module PayloadHelpers
     {
       "component custom price scheme #{comp_idx}" => 'per_unit',
       "component per unit price #{comp_idx}" => Faker::Commerce.price,
-      # "component #{comp_idx} starting quantity #{price_idx}" => 1,
-      # "component #{comp_idx} ending quantity #{price_idx}" => 10,
-      # "component #{comp_idx} unit price #{price_idx}" => Faker::Commerce.price,
+      "component #{comp_idx} starting quantity #{price_idx}" => 1,
+      "component #{comp_idx} ending quantity #{price_idx}" => 10,
+      "component #{comp_idx} unit price #{price_idx}" => Faker::Commerce.price,
 
       "component custom overage price scheme #{comp_idx}" => 'per_unit',
       "component #{comp_idx} overage starting quantity #{price_idx}" => 1,
-      # "component #{comp_idx} overage ending quantity #{price_idx}" => 10,
+      "component #{comp_idx} overage ending quantity #{price_idx}" => 10,
       "component #{comp_idx} overage unit price #{price_idx}" => Faker::Commerce.price
     }
   end
