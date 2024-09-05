@@ -84,8 +84,8 @@ module PayloadHelpers
 
   def self.product_data
     {
-      'product' => Faker::Commerce.product_name,
-      'product price point' => Faker::Commerce.price,
+      'product' => generate_catalog_handle,
+      'product price point' => generate_catalog_handle,
       'product price point handle' => nil
     }
   end
