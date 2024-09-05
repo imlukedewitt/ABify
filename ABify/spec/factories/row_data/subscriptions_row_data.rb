@@ -34,6 +34,13 @@ FactoryBot.define do
         row.merge!(PayloadHelpers.component_custom_price_data)
       end
     end
+
+    trait :with_custom_fields do
+      after(:build) do |row|
+        row['custom field [field1]'] = Faker::Alphanumeric.alphanumeric(number: 10)
+        row['custom field [field2]'] = Faker::Alphanumeric.alphanumeric(number: 10)
+      end
+    end
   end
 end
 

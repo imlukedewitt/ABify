@@ -43,19 +43,19 @@ RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
 
     context 'grouped subscription row' do
       it 'creates a payload with group data' do
-        row_grouped = build(:create_subscription_row, :grouped) 
-        payload = described_class.create_subscriptions(row_grouped)
+        row = build(:create_subscription_row, :grouped) 
+        payload = described_class.create_subscriptions(row)
         expect(payload[:subscription][:group]).to be_a(Hash)
-        expect(payload[:subscription][:group][:target][:type]).to eq(row_grouped['group payer'])
-        expect(payload[:subscription][:group][:billing][:align_date]).to eq(row_grouped['align billing date'])
+        expect(payload[:subscription][:group][:target][:type]).to eq(row['group payer'])
+        expect(payload[:subscription][:group][:billing][:align_date]).to eq(row['align billing date'])
       end
     end
 
     context 'subscription row with a coupon' do
       it 'creates a payload with coupon data' do
-        row_with_coupon = build(:create_subscription_row, :with_coupon)
-        payload = described_class.create_subscriptions(row_with_coupon)
-        expect(payload[:subscription][:coupon_codes].first).to eq(row_with_coupon['coupon 1'])
+        row = build(:create_subscription_row, :with_coupon)
+        payload = described_class.create_subscriptions(row)
+        expect(payload[:subscription][:coupon_codes].first).to eq(row['coupon 1'])
       end
     end
 
@@ -66,7 +66,6 @@ RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
 
         expect(payload[:subscription][:components]).to be_a(Array)
         component = payload[:subscription][:components].first
-        p component
         expect(component[:component_id]).to eq("handle:#{row['component 1']}")
         expect(component[:allocated_quantity]).to eq(row['component quantity 1'])
         expect(component[:price_point]).to eq("handle:#{row['component price point 1']}")
@@ -105,6 +104,15 @@ RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
         expect(overage_price[:starting_quantity]).to eq(row['component 1 overage starting quantity 1'])
         expect(overage_price[:unit_price]).to eq(row['component 1 overage unit price 1'])
         expect(overage_price[:ending_quantity]).to eq(row['component 1 overage ending quantity 1'])
+      end
+    end
+
+    context 'row with custom fields' do
+      it 'creates a payload with custom field data' do
+        row = build(:create_subscription_row, :with_custom_fields)
+        payload = described_class.create_subscriptions(row)
+        expect(payload[:subscription][:metafields]).to include('field1' => row['custom field [field1]'])
+        expect(payload[:subscription][:metafields]).to include('field2' => row['custom field [field2]'])
       end
     end
   end

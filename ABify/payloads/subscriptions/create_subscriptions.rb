@@ -36,10 +36,18 @@ module Payloads
             payment_profile_id: payment_profile_id(row),
             group: group(row),
             coupon_codes: coupon_codes(row),
-            components: components(row)
+            components: components(row),
+            metafields: metafields(row)
           }
         }
         trim_payload(payload)
+      end
+
+      def self.metafields(row)
+        row.keys.select { |key| key.match(/custom field \[.+\]/) }.each_with_object({}) do |key, obj|
+          custom_field_name = key.match(/\[(.*)\]/)[1]
+          obj[custom_field_name] = row[key]
+        end
       end
 
       def self.customer_reference(row)
