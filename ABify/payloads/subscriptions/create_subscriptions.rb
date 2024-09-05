@@ -4,8 +4,8 @@ module Payloads
   module Subscriptions
     # json payloads for creating subscriptions
     module CreateSubscriptions
-      require_relative '../../string_utils'
-      require_relative '../../utils'
+      require_relative '../../helpers/string_utils'
+      require_relative '../../helpers/utils'
 
       extend Utils
       extend StringUtils
@@ -80,17 +80,16 @@ module Payloads
         quantity = row["component quantity #{idx}"]
         return if blank?(quantity)
 
-        price_point = present?(row["component price point #{idx}"]) ? "handle:#{row["component price point #{idx}"]}" : nil
         component = {
           component_id: "handle:#{row["component #{idx}"]}",
           allocated_quantity: quantity,
           unit_balance: quantity
         }
 
-        if present?(custom_price_scheme)
+        if present?(row["component custom price scheme #{idx}"])
           component[:custom_price] = custom_price(row, idx)
         else
-          component[:price_point] = price_point
+          component[:price_point] = "handle:#{row["component price point #{idx}"]}"
         end
 
         component
@@ -116,7 +115,7 @@ module Payloads
       end
 
       def self.custom_prices(row, idx, scheme)
-        if scheme == 'per_unit' || blank?(scheme)
+        if scheme == 'per_unit' || scheme == 'on_off' || blank?(scheme)
           [{
             starting_quantity: 1,
             unit_price: row["component per unit price #{idx}"]
@@ -137,12 +136,9 @@ module Payloads
       end
 
       def self.custom_overage_pricing(row, idx)
-        unless blank?(row["component custom overage price scheme #{i}"])
-          scheme = row["component custom overage price scheme #{i}"]
-        end
         regex = /component #{idx} overage starting quantity/
         {
-          pricing_scheme: scheme,
+          pricing_scheme: row["component custom overage price scheme #{idx}"],
           prices: row.keys.select { |key| regex.match?(key) }.map do |key|
             j = key.match(/\d+$/)[0].to_i
             next unless row["component #{idx} overage unit price #{j}"]
