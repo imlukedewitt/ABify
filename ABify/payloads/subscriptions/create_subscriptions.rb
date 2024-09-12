@@ -14,7 +14,7 @@ module Payloads
         payload = {
           subscription: {
             dunning_exempt: row['dunning exempt'],
-            import_mrr: row['initial billing at'] ? false : true,
+            import_mrr: row['initial billing at'] ? false : true, # set to true when possible
             customer_id: row['customer id'],
             customer_reference: customer_reference(row),
             receives_invoice_emails: row['receives invoice emails'],
