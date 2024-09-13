@@ -61,7 +61,7 @@ module Payloads
       end
 
       def self.group(row)
-        return unless true?(row['subscription group'])
+        return false unless true?(row['subscription group'])
 
         {
           target: {
