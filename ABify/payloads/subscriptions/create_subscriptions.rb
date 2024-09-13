@@ -55,7 +55,7 @@ module Payloads
       end
 
       def self.payment_profile_id(row)
-        return unless row['who pays'] == 'self' || row['invoice type'] != 'consolidated'
+        return if row['group payer'] != 'self' || true?(row['subscription group'])
 
         row['payment profile id']
       end
