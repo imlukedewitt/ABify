@@ -9,7 +9,7 @@ RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
   describe '.create_subscriptions' do
     context 'base subscription row' do
       it 'creates a payload with the correct keys' do
-        row =  build(:create_subscription_row)
+        row = build(:create_subscription_row)
         payload = described_class.create_subscriptions(row)
 
         expect(payload).to be_a(Hash)
@@ -43,7 +43,7 @@ RSpec.describe Payloads::Subscriptions::CreateSubscriptions do
 
     context 'grouped subscription row' do
       it 'creates a payload with group data' do
-        row = build(:create_subscription_row, :grouped) 
+        row = build(:create_subscription_row, :grouped)
         payload = described_class.create_subscriptions(row)
         expect(payload[:subscription][:group]).to be_a(Hash)
         expect(payload[:subscription][:group][:target][:type]).to eq(row['group payer'])
