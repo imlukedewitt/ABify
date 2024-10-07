@@ -4,8 +4,8 @@
 module Payloads
   # component json payloads
   module Components
-    require_relative '../utils'
-    require_relative '../string_utils'
+    require_relative '../helpers/utils'
+    require_relative '../helpers/string_utils'
     extend Utils
     extend StringUtils
 

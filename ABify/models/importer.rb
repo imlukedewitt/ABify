@@ -18,7 +18,7 @@ class Importer
     config.logger = HydraLogger.new("log/#{@id}.log")
     @workflow = workflow
     @data = data
-    @hydra = Typhoeus::Hydra.new(max_concurrency: 50)
+    @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
     @status = 'not started'
     @created_at = Time.now
     @keystore = keystore
@@ -67,11 +67,11 @@ class Importer
     end_time = Time.now
     start_time = Time.parse(start_time)
     duration_in_seconds = end_time - start_time
-  
+
     seconds = duration_in_seconds % 60
     minutes = (duration_in_seconds / 60) % 60
     hours = (duration_in_seconds / 3600)
-  
+
     "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
   end
 
@@ -85,11 +85,11 @@ class Importer
 
   def run_duration(start_time, end_time)
     duration_in_seconds = end_time - start_time
-  
+
     seconds = duration_in_seconds % 60
     minutes = (duration_in_seconds / 60) % 60
     hours = (duration_in_seconds / 3600)
-  
+
     "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
   end
 

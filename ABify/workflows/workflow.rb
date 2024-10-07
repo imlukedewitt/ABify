@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/payloads/payloads'
+require_relative '../payloads/payloads'
 require_relative '../models/step'
 require_relative '../helpers/string_utils'
 require_relative '../helpers/utils'

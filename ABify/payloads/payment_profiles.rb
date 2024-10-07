@@ -4,8 +4,8 @@
 module Payloads
   # payment profile json payloads
   module PaymentProfiles
-    require_relative '../utils'
-    require_relative '../string_utils'
+    require_relative '../helpers/utils'
+    require_relative '../helpers/string_utils'
     extend Utils
     extend StringUtils
 

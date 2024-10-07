@@ -2,15 +2,19 @@
 
 source 'https://rubygems.org'
 
+gem 'activesupport'
 gem 'csv'
 gem 'dotenv'
+gem 'factory_bot', require: false
 gem 'faker'
 gem 'ffi', '1.17.0'
 gem 'google-cloud-firestore'
 gem 'json'
 gem 'pry'
 gem 'redis'
+gem 'rspec'
 gem 'rubocop'
 gem 'sinatra'
+gem 'solargraph'
 gem 'thin', '1.8.2'
 gem 'typhoeus'
