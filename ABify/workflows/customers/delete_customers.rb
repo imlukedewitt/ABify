@@ -14,31 +14,33 @@ class DeleteCustomers < Workflow
       delete_customer_step
     ]
   end
-end
 
-def lookup_customer_step
-  {
-    name: 'lookup customer by reference',
-    required: true,
-    skip: ->(row) { present?(row['customer id']) },
-    url: lambda { |row, config|
-      customer_reference = URI.encode_www_form_component(row['customer reference'])
-      "#{config.base_url}/customers/lookup.json?reference=#{customer_reference}"
-    },
-    method: :get,
-    response_key: 'customer id',
-    response_val: ->(result) { result['customer']['id'] }
-  }
-end
+  private
 
-def delete_customer_step
-  {
-    name: 'delete customer',
-    required: true,
-    method: :delete,
-    url: ->(row, config) { "#{config.base_url}/customers/#{row['customer id']}.json" },
-    response_key: 'customer id',
-    response_val: ->(result) { result },
-    response_text: ->(_result, _config) { 'customer deleted' }
-  }
+  def lookup_customer_step
+    {
+      name: 'lookup customer by reference',
+      required: true,
+      skip: ->(row) { present?(row['customer id']) },
+      url: lambda { |row, config|
+        customer_reference = URI.encode_www_form_component(row['customer reference'])
+        "#{config.base_url}/customers/lookup.json?reference=#{customer_reference}"
+      },
+      method: :get,
+      response_key: 'customer id',
+      response_val: ->(result) { result['customer']['id'] }
+    }
+  end
+
+  def delete_customer_step
+    {
+      name: 'delete customer',
+      required: true,
+      method: :delete,
+      url: ->(row, config) { "#{config.base_url}/customers/#{row['customer id']}.json" },
+      response_key: 'customer id',
+      response_val: ->(result) { result },
+      response_text: ->(_result, _config) { 'customer deleted' }
+    }
+  end
 end
