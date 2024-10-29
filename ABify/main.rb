@@ -53,8 +53,16 @@ post '/start' do
            CSVSource.new(request.body.read)
          when 'json'
            JSONSource.new(request.body.read)
+         when 'mock'
+           row_count = request.env['HTTP_ROW_COUNT']&.to_i
+           unless row_count
+             status 400
+             return { error: 'Row count required for mock data' }.to_json
+           end
+           MockData.new(template_name, row_count)
          else
-           MockData.new(template_name, request.env['HTTP_ROW_COUNT']&.to_i)
+           status 400
+           return { error: 'Invalid source type' }.to_json
          end
 
   workflow = BuildWorkflow.for(template_name)
