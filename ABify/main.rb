@@ -28,8 +28,8 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
   username == ENV['BASIC_AUTH_USERNAME'] && password == ENV['BASIC_AUTH_PASSWORD']
 end
 
-keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
-# keystore = LocalKeystore.new
+# keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
+keystore = LocalKeystore.new
 
 get '/' do
   'It works!'
@@ -54,7 +54,7 @@ post '/start' do
          when 'JSON'
            JSONSource.new(request.body.read)
          else
-           MockData.new(template_name, 50)
+           MockData.new(template_name, request.env['HTTP_ROW_COUNT']&.to_i)
          end
 
   workflow = BuildWorkflow.for(template_name)
@@ -78,9 +78,7 @@ get '/status' do
   status 404 unless data
   return { error: 'Import ID not found' }.to_json unless data
 
-  puts 'data found'
-
-  data['run_time'] = Importer.calculate_run_time(data['created_at']) unless data['completed_at']
+  data['run_time'] = Importer.calculate_run_time(data[:created_at], data[:completed_at])
   data.to_json
 end
 
