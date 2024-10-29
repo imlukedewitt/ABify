@@ -24,6 +24,10 @@ RSpec.describe DeleteCustomers do
       expect(url).to eq('/customers/lookup.json?reference=cus_123')
     end
 
+    it 'uses the corrent method' do
+      expect(step.method).to eq(:get)
+    end
+
     it 'skips the step if customer id is present' do
       expect(step.skip.call(row)).to be(false)
       row['customer id'] = '123'
@@ -33,6 +37,24 @@ RSpec.describe DeleteCustomers do
     it 'extracts the customer id from the response' do
       response = { 'customer' => { 'id' => '123' } }
       expect(step.response_val.call(response)).to eq('123')
+    end
+
+    it 'returns the correct response key' do
+      expect(step.response_key).to eq('customer id')
+    end
+  end
+
+  describe 'Delete customer step' do
+    let(:step) { workflow.steps[1] }
+    let(:row) { { 'customer id' => '123' } }
+
+    it 'generates the correct URL' do
+      url = step.url.call(row, config)
+      expect(url).to eq('/customers/123.json')
+    end
+
+    it 'uses the corrent method' do
+      expect(step.method).to eq(:delete)
     end
   end
 end
