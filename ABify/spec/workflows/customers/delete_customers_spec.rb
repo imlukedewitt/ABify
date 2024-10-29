@@ -15,7 +15,7 @@ RSpec.describe DeleteCustomers do
     end
   end
 
-  describe 'lookup_customer_step' do
+  describe 'Customer lookup step' do
     let(:step) { workflow.steps[0] }
     let(:row) { { 'customer reference' => 'cus_123' } }
 
@@ -28,6 +28,11 @@ RSpec.describe DeleteCustomers do
       expect(step.skip.call(row)).to be(false)
       row['customer id'] = '123'
       expect(step.skip.call(row)).to be(true)
+    end
+
+    it 'extracts the customer id from the response' do
+      response = { 'customer' => { 'id' => '123' } }
+      expect(step.response_val.call(response)).to eq('123')
     end
   end
 end
