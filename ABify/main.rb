@@ -49,9 +49,9 @@ post '/start' do
   template_name = request.env['HTTP_TEMPLATE']
   source_type = request.env['HTTP_SOURCE_TYPE']
   data = case source_type
-         when 'CSV'
+         when 'csv'
            CSVSource.new(request.body.read)
-         when 'JSON'
+         when 'json'
            JSONSource.new(request.body.read)
          else
            MockData.new(template_name, request.env['HTTP_ROW_COUNT']&.to_i)
