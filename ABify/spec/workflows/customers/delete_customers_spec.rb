@@ -23,5 +23,11 @@ RSpec.describe DeleteCustomers do
       url = step.url.call(row, config)
       expect(url).to eq('/customers/lookup.json?reference=cus_123')
     end
+
+    it 'skips the step if customer id is present' do
+      expect(step.skip.call(row)).to be(false)
+      row['customer id'] = '123'
+      expect(step.skip.call(row)).to be(true)
+    end
   end
 end
