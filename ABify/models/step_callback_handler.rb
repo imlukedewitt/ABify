@@ -54,6 +54,7 @@ class StepCallbackHandler
     @row.status = 'error' if @step.required
     code = response.code
     parsed_response = parse_response(response)
+    parsed_response = parsed_response['errors'] if parsed_response['errors']
     @row.errors ||= []
     @row.errors << { step: @step.name, text: parsed_response, code: code }
   end
