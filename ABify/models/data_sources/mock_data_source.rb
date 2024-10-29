@@ -5,31 +5,48 @@ require_relative 'data_source'
 require_relative 'row'
 
 # Placeholder data source
-class MockCustomerData < DataSource
+class MockData < DataSource
   attr_reader :rows
 
-  def initialize(count = 50)
+  def initialize(template, count = 50)
     super()
-    @rows = generate_data(count)
+
+    case template
+    when 'createCustomers'
+      generator = method(:mock_create_customers)
+    when 'deleteCustomers'
+      generator = method(:mock_delete_customers)
+    else
+      raise "Unknown template: #{template}"
+    end
+
+    # Generate rows with index
+    @rows = count.times.map do |i|
+      Row.new(generator.call, i + 1)
+    end
   end
 
-  def generate_data(rows = 50)
-    rows.times.with_index(1).map do |idx|
-      email = if rand < 0.05
-                'invalid_email'
-              else
-                Faker::Internet.email
-              end
+  private
 
-      customer = {
-        'first name' => Faker::Name.first_name,
-        'last name' => Faker::Name.last_name,
-        'email' => email,
-        'create payment profile' => true,
-        'current vault' => 'bogus',
-        'vault token' => '1'
-      }
-      Row.new(customer, idx)
-    end
+  def mock_create_customers
+    email = if rand < 0.05
+              'invalid_email'
+            else
+              Faker::Internet.email
+            end
+    {
+      'first name' => Faker::Name.first_name,
+      'last name' => Faker::Name.last_name,
+      'email' => email,
+      'create payment profile' => true,
+      'current vault' => 'bogus',
+      'vault token' => '1'
+    }
+  end
+
+  def mock_delete_customers
+    {
+      'customer reference' => Faker::Alphanumeric.alphanumeric(number: 10)
+    }
   end
 end
