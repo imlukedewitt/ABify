@@ -50,9 +50,9 @@ post '/start' do
   source_type = request.env['HTTP_SOURCE_TYPE']
   data = case source_type
          when 'csv'
-           CSVSource.new(request.body.read)
+           CsvData.new(request.body.read)
          when 'json'
-           JSONSource.new(request.body.read)
+           JsonData.new(request.body.read)
          when 'mock'
            row_count = request.env['HTTP_ROW_COUNT']&.to_i
            unless row_count
@@ -64,7 +64,6 @@ post '/start' do
            status 400
            return { error: 'Invalid source type' }.to_json
          end
-
   workflow = BuildWorkflow.for(template_name)
   importer = Importer.new(config, workflow, data, keystore)
 
