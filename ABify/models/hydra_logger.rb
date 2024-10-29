@@ -4,8 +4,8 @@ require 'logger'
 
 # Logger for Typhoeus/Hydra requests
 class HydraLogger
-  def initialize(log_file = 'import.log')
-    @logger = Logger.new(log_file)
+  def initialize(import_id)
+    @logger = Logger.new("log/#{import_id}.log")
     @mutex = Mutex.new
     @errors = 0
     @max_row_idx = 0
