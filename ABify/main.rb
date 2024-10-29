@@ -46,9 +46,10 @@ post '/start' do
   )
 
   request.body.rewind
-  data = JsonData.new(request.body.read)
+  template_name = request.env['HTTP_TEMPLATE']
+  data = MockData.new(template_name, 50)
 
-  workflow = BuildWorkflow.for(request.env['HTTP_TEMPLATE'])
+  workflow = BuildWorkflow.for(template_name)
   importer = Importer.new(config, workflow, data, keystore)
 
   Thread.new do
@@ -68,6 +69,7 @@ get '/status' do
   data = keystore.get(import_id)
   status 404 unless data
   return { error: 'Import ID not found' }.to_json unless data
+
   puts 'data found'
 
   data['run_time'] = Importer.calculate_run_time(data['created_at']) unless data['completed_at']
