@@ -34,12 +34,17 @@ class MockData < DataSource
             else
               Faker::Internet.email
             end
+    vault = if rand < 0.05
+              'invalid_vault'
+            else
+              'bogus'
+            end
     {
       'first name' => Faker::Name.first_name,
       'last name' => Faker::Name.last_name,
       'email' => email,
       'create payment profile' => true,
-      'current vault' => 'bogus',
+      'current vault' => vault,
       'vault token' => '1'
     }
   end

@@ -57,7 +57,7 @@ post '/start' do
              return { error: "Error loading CSV: #{e.message}" }.to_json
            end
          when 'json'
-           JSONSource.new(request.body.read)
+           JsonData.new(request.body.read)
          when 'mock'
            row_count = request.env['HTTP_ROW_COUNT']&.to_i
            unless row_count
@@ -69,7 +69,6 @@ post '/start' do
            status 422
            return { error: 'Invalid source type' }.to_json
          end
-
   workflow = BuildWorkflow.for(template_name)
   importer = Importer.new(config, workflow, data, keystore)
 
