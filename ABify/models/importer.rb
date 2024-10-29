@@ -63,9 +63,9 @@ class Importer
     }
   end
 
-  def self.calculate_run_time(start_time)
-    end_time = Time.now
-    start_time = Time.parse(start_time)
+  def self.calculate_run_time(start_time, end_time = Time.now)
+    return nil unless start_time
+
     duration_in_seconds = end_time - start_time
 
     seconds = duration_in_seconds % 60
