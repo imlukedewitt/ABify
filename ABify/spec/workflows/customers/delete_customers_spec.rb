@@ -6,7 +6,6 @@ require_relative '../../../workflows/customers/delete_customers'
 RSpec.describe DeleteCustomers do
   let(:config) { double('Config', base_url: '') }
   let(:workflow) { DeleteCustomers.new }
-  let(:row) { { 'customer reference' => 'cus_123' } }
 
   describe '#unbuilt_steps' do
     it 'returns an array of unbuilt steps' do
@@ -17,10 +16,11 @@ RSpec.describe DeleteCustomers do
   end
 
   describe 'lookup_customer_step' do
-    let(:step) { lookup_customer_step }
+    let(:step) { workflow.steps[0] }
+    let(:row) { { 'customer reference' => 'cus_123' } }
 
     it 'generates the correct URL' do
-      url = step[:url].call(row, config)
+      url = step.url.call(row, config)
       expect(url).to eq('/customers/lookup.json?reference=cus_123')
     end
   end
