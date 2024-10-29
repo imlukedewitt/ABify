@@ -20,7 +20,7 @@ def lookup_customer_step
   {
     name: 'lookup customer by reference',
     required: true,
-    skip: ->(row) { blank?(row['customer reference']) },
+    skip: ->(row) { present?(row['customer id']) },
     url: lambda { |row, config|
       customer_reference = URI.encode_www_form_component(row['customer reference'])
       "#{config.base_url}/customers/lookup.json?reference=#{customer_reference}"
