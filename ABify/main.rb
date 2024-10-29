@@ -47,7 +47,16 @@ post '/start' do
 
   request.body.rewind
   template_name = request.env['HTTP_TEMPLATE']
-  data = MockData.new(template_name, 50)
+  source_type = request.env['HTTP_SOURCE_TYPE']
+  data = case source_type
+    when 'CSV'
+      CSVSource.new(request.body.read)
+    when 'JSON'
+      JSONSource.new(request.body.read)
+    else
+      MockData.new(template_name, 50)
+    end
+  end
 
   workflow = BuildWorkflow.for(template_name)
   importer = Importer.new(config, workflow, data, keystore)
