@@ -15,4 +15,13 @@ RSpec.describe DeleteCustomers do
       expect(steps.size).to eq(2)
     end
   end
+
+  describe 'lookup_customer_step' do
+    let(:step) { lookup_customer_step }
+
+    it 'generates the correct URL' do
+      url = step[:url].call(row, config)
+      expect(url).to eq('/customers/lookup.json?reference=123')
+    end
+  end
 end
