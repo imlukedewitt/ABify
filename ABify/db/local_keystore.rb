@@ -1,3 +1,8 @@
+# frozen_string_literal: true
+
+require 'json'
+
+# placeholder until I get local redis going
 class LocalKeystore
   def initialize
     @store = {}

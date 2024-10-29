@@ -7,6 +7,7 @@ require 'sinatra'
 require_relative 'db/redis_client'
 require_relative 'db/local_keystore'
 require_relative 'models/config'
+require_relative 'models/data_sources/csv_source'
 require_relative 'models/data_sources/json_source'
 require_relative 'models/data_sources/mock_data_source'
 require_relative 'models/importer'
@@ -27,8 +28,8 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
   username == ENV['BASIC_AUTH_USERNAME'] && password == ENV['BASIC_AUTH_PASSWORD']
 end
 
-keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
-# keystore = LocalKeystore.new
+# keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
+keystore = LocalKeystore.new
 
 get '/' do
   'It works!'
@@ -45,9 +46,18 @@ post '/start' do
   )
 
   request.body.rewind
-  data = JsonData.new(request.body.read)
+  template_name = request.env['HTTP_TEMPLATE']
+  source_type = request.env['HTTP_SOURCE_TYPE']
+  data = case source_type
+         when 'CSV'
+           CSVSource.new(request.body.read)
+         when 'JSON'
+           JSONSource.new(request.body.read)
+         else
+           MockData.new(template_name, request.env['HTTP_ROW_COUNT']&.to_i)
+         end
 
-  workflow = BuildWorkflow.for(request.env['HTTP_TEMPLATE'])
+  workflow = BuildWorkflow.for(template_name)
   importer = Importer.new(config, workflow, data, keystore)
 
   Thread.new do
@@ -67,9 +77,8 @@ get '/status' do
   data = keystore.get(import_id)
   status 404 unless data
   return { error: 'Import ID not found' }.to_json unless data
-  puts 'data found'
 
-  data['run_time'] = Importer.calculate_run_time(data['created_at']) unless data['completed_at']
+  data['run_time'] = Importer.calculate_run_time(data[:created_at], data[:completed_at])
   data.to_json
 end
 
