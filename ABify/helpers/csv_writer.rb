@@ -51,7 +51,12 @@ class CSVWriter
       error = row[:errors].find { |e| e[:step] == step }
       response = row[:responses].find { |r| r[:step] == step }
       if error
-        error_text = error[:text].join('\n') if error[:text]
+        error_text = ''
+        begin
+          error_text = error[:text].join('\n') if error[:text]
+        rescue StandardError => _e
+          error_text = error[:text]
+        end
         row_data["Response (#{step})"] = "(#{error[:code]}) #{error_text}"
       elsif response
         row_data["Response (#{step})"] = response[:text]
