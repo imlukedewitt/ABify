@@ -6,10 +6,13 @@ require 'securerandom'
 require_relative 'hydra_logger'
 require_relative '../workflows/workflow'
 require_relative '../helpers/csv_writer'
+require_relative '../helpers/utils'
 
 # An Importer runs a workflow on a set of data
 # The config object is passed to each step to help build requests
 class Importer
+  include Utils
+
   attr_reader :status, :id, :data
 
   def initialize(config, workflow, data, keystore)
@@ -46,7 +49,7 @@ class Importer
 
   def summary(data: true)
     end_time = @completed_at || Time.now
-    run_time = run_duration(@created_at, end_time)
+    run_time = duration(@created_at, end_time)
 
     {
       id: @id,
@@ -79,15 +82,5 @@ class Importer
     timestamp = Time.now.utc.strftime('%Y%m%d%H%M%S')
     unique_id = SecureRandom.hex(4)
     "#{timestamp}-#{@config.subdomain}-#{unique_id}"
-  end
-
-  def run_duration(start_time, end_time)
-    duration_in_seconds = end_time - start_time
-
-    seconds = duration_in_seconds % 60
-    minutes = (duration_in_seconds / 60) % 60
-    hours = (duration_in_seconds / 3600)
-
-    "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
   end
 end
