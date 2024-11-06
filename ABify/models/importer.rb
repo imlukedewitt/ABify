@@ -31,8 +31,6 @@ class Importer
     @status = 'running'
     puts 'starting import'
     first_step, *next_steps = @workflow.steps
-    @stop_update_thread = false
-    update_thread = start_keystore_update_thread
 
     @data.rows.each do |row|
       first_step&.enqueue(row, @hydra, next_steps, @config)
@@ -40,8 +38,6 @@ class Importer
 
     @hydra.run
     @status = 'complete'
-    @stop_update_thread = true
-    update_thread.join
     @completed_at = Time.now
     @keystore.set(@id, summary)
     CSVWriter.new(@id).write_import_results(summary)
