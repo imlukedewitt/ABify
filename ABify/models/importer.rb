@@ -6,13 +6,16 @@ require 'securerandom'
 require_relative 'hydra_logger'
 require_relative '../workflows/workflow'
 require_relative '../helpers/csv_writer'
+require_relative '../helpers/utils'
 
 # An Importer runs a workflow on a set of data
 # The config object is passed to each step to help build requests
 class Importer
+  include Utils
+
   attr_reader :status, :id, :data
 
-  def initialize(config, workflow, data, keystore)
+  def initialize(config, workflow, data)
     @config = config
     @id = generate_id
     config.row_count = data.rows.count
@@ -22,17 +25,16 @@ class Importer
     @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
     @status = 'not started'
     @created_at = Time.now
-    @keystore = keystore
+    @keystore = config.keystore
 
-    keystore.set(@id, summary)
+    @keystore.set(@id, summary)
   end
 
   def start
     @status = 'running'
+    @keystore.set(@id, summary)
     puts 'starting import'
     first_step, *next_steps = @workflow.steps
-    @stop_update_thread = false
-    update_thread = start_keystore_update_thread
 
     @data.rows.each do |row|
       first_step&.enqueue(row, @hydra, next_steps, @config)
@@ -40,8 +42,6 @@ class Importer
 
     @hydra.run
     @status = 'complete'
-    @stop_update_thread = true
-    update_thread.join
     @completed_at = Time.now
     @keystore.set(@id, summary)
     CSVWriter.new(@id).write_import_results(summary)
@@ -50,7 +50,7 @@ class Importer
 
   def summary(data: true)
     end_time = @completed_at || Time.now
-    run_time = run_duration(@created_at, end_time)
+    run_time = duration(@created_at, end_time)
 
     {
       id: @id,
@@ -59,22 +59,12 @@ class Importer
       completed_at: @completed_at,
       run_time: run_time,
       row_count: @config.row_count,
+      completed_rows: @data.completed_row_count,
+      failed_rows: @data.failed_row_count,
       subdomain: @config.subdomain,
       domain: @config.domain,
       data: @data.summary(data: data)
     }
-  end
-
-  def self.calculate_run_time(start_time, end_time = Time.now)
-    return nil unless start_time
-
-    duration_in_seconds = end_time - start_time
-
-    seconds = duration_in_seconds % 60
-    minutes = (duration_in_seconds / 60) % 60
-    hours = (duration_in_seconds / 3600)
-
-    "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
   end
 
   private
@@ -83,24 +73,5 @@ class Importer
     timestamp = Time.now.utc.strftime('%Y%m%d%H%M%S')
     unique_id = SecureRandom.hex(4)
     "#{timestamp}-#{@config.subdomain}-#{unique_id}"
-  end
-
-  def run_duration(start_time, end_time)
-    duration_in_seconds = end_time - start_time
-
-    seconds = duration_in_seconds % 60
-    minutes = (duration_in_seconds / 60) % 60
-    hours = (duration_in_seconds / 3600)
-
-    "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
-  end
-
-  def start_keystore_update_thread
-    Thread.new do
-      until @stop_update_thread
-        @keystore.set(@id, summary)
-        sleep 1
-      end
-    end
   end
 end
