@@ -43,7 +43,8 @@ post '/start' do
   config = Config.new(
     api_key: request.env['HTTP_APIKEY'],
     subdomain: request.env['HTTP_SUBDOMAIN'],
-    domain: request.env['HTTP_DOMAIN']
+    domain: request.env['HTTP_DOMAIN'],
+    keystore: keystore
   )
 
   request.body.rewind
@@ -71,7 +72,7 @@ post '/start' do
            return { error: 'Invalid source type' }.to_json
          end
   workflow = BuildWorkflow.for(template_name)
-  importer = Importer.new(config, workflow, data, keystore)
+  importer = Importer.new(config, workflow, data)
 
   Thread.new do
     importer.start
@@ -105,4 +106,18 @@ post '/clear' do
   keystore.del(import_id)
 
   { message: 'cleared', import_id: import_id }.to_json
+end
+
+post '/stop' do
+  import_id = params[:id]
+  content_type :json
+  return { error: 'Import ID required' }.to_json unless import_id
+
+  importer = keystore.get(import_id)
+  status 404 unless importer
+  return { error: 'Import ID not found' }.to_json unless importer
+
+  keystore.set("#{import_id}-stop", true)
+
+  { message: 'stopping', import_id: import_id }.to_json
 end

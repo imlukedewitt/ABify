@@ -15,7 +15,7 @@ class Importer
 
   attr_reader :status, :id, :data
 
-  def initialize(config, workflow, data, keystore)
+  def initialize(config, workflow, data)
     @config = config
     @id = generate_id
     config.row_count = data.rows.count
@@ -25,9 +25,9 @@ class Importer
     @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
     @status = 'not started'
     @created_at = Time.now
-    @keystore = keystore
+    @keystore = config.keystore
 
-    keystore.set(@id, summary)
+    @keystore.set(@id, summary)
   end
 
   def start
