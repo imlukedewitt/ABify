@@ -94,13 +94,4 @@ class Importer
 
     "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
   end
-
-  def start_keystore_update_thread
-    Thread.new do
-      until @stop_update_thread
-        @keystore.set(@id, summary)
-        sleep 1
-      end
-    end
-  end
 end
