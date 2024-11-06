@@ -32,6 +32,7 @@ class Importer
 
   def start
     @status = 'running'
+    @keystore.set(@id, summary)
     puts 'starting import'
     first_step, *next_steps = @workflow.steps
 
