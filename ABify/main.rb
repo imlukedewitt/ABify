@@ -6,6 +6,7 @@ require 'pry'
 require 'sinatra'
 require_relative 'db/redis_client'
 require_relative 'db/local_keystore'
+require_relative 'helpers/utils'
 require_relative 'models/config'
 require_relative 'models/data_sources/csv_source'
 require_relative 'models/data_sources/json_source'
@@ -81,6 +82,8 @@ post '/start' do
 end
 
 get '/status' do
+  extend Utils
+
   import_id = params[:id]
   puts "import id: #{import_id}"
   content_type :json
@@ -90,7 +93,7 @@ get '/status' do
   status 404 unless data
   return { error: 'Import ID not found' }.to_json unless data
 
-  data['run_time'] = Importer.calculate_run_time(data[:created_at], data[:completed_at])
+  data['run_time'] = duration(data[:created_at], data[:completed_at])
   data.to_json
 end
 
