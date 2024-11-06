@@ -59,6 +59,8 @@ class Importer
       completed_at: @completed_at,
       run_time: run_time,
       row_count: @config.row_count,
+      completed_rows: @data.completed_row_count,
+      failed_rows: @data.failed_row_count,
       subdomain: @config.subdomain,
       domain: @config.domain,
       data: @data.summary(data: data)

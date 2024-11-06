@@ -15,4 +15,12 @@ class DataSource
       @rows.select { |row| row.requests.length > 1 }.map { |row| row.summary(data: data) }
     end
   end
+
+  def completed_row_count
+    @rows.select { |row| %w[complete error].include?(row.status) }.count
+  end
+
+  def failed_row_count
+    @rows.select { |row| row.status == 'error' }.count
+  end
 end
