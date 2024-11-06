@@ -13,9 +13,10 @@ module Utils
     end
   end
 
-  def duration(start_time, end_time = Time.now)
+  def duration(start_time, end_time)
     return nil unless start_time
 
+    end_time = Time.now if end_time.nil?
     duration_in_seconds = end_time - start_time
 
     seconds = duration_in_seconds % 60
