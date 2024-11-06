@@ -67,18 +67,6 @@ class Importer
     }
   end
 
-  def self.calculate_run_time(start_time, end_time = Time.now)
-    return nil unless start_time
-
-    duration_in_seconds = end_time - start_time
-
-    seconds = duration_in_seconds % 60
-    minutes = (duration_in_seconds / 60) % 60
-    hours = (duration_in_seconds / 3600)
-
-    "#{hours.to_i}h #{minutes.to_i}m #{seconds.round(2)}s"
-  end
-
   private
 
   def generate_id
