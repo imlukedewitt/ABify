@@ -64,13 +64,4 @@ class Step
       timeout: 120
     )
   end
-
-  # queues the next template step to be run
-  # if there are no more steps, the row is complete
-  def queue_next_step(next_steps, row, hydra, config, is_first_step: false)
-    return unless next_steps.any?
-
-    next_step = next_steps.first
-    next_step.enqueue(row, hydra, next_steps.drop(1), config, is_first_step: is_first_step)
-  end
 end
