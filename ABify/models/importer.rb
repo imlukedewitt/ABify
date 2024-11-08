@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
-require 'time'
 require 'typhoeus'
 require 'securerandom'
 require_relative 'hydra_logger'
 require_relative '../workflows/workflow'
 require_relative '../helpers/csv_writer'
 require_relative '../helpers/utils'
+require_relative '../helpers/string_utils'
 
 # An Importer runs a workflow on a set of data
 # The config object is passed to each step to help build requests
 class Importer
   include Utils
+  include StringUtils
 
   attr_reader :status, :id, :data
 
@@ -65,13 +66,5 @@ class Importer
       domain: @config.domain,
       data: @data.summary(data: data)
     }
-  end
-
-  private
-
-  def generate_id
-    timestamp = Time.now.utc.strftime('%Y%m%d%H%M%S')
-    unique_id = SecureRandom.hex(4)
-    "#{timestamp}-#{@config.subdomain}-#{unique_id}"
   end
 end
