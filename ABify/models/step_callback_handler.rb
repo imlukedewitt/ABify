@@ -26,14 +26,14 @@ class StepCallbackHandler
 
   # queues the next template step to be run
   # if there are no more steps, the row is complete
-  def queue_next_step(is_first_step: false)
+  def queue_next_step
     if @next_steps.empty?
       @row.status = 'complete' if @row.status != 'error'
       return
     end
 
     next_step = @next_steps.first
-    next_step.enqueue(@row, @hydra, @next_steps.drop(1), is_first_step: is_first_step)
+    next_step.enqueue(@row, @hydra, @next_steps.drop(1))
   end
 
   private
