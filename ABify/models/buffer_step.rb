@@ -2,13 +2,13 @@
 
 require 'typhoeus'
 
-# This is a "fake" step that is added to the start of every workflow. This
+# This is a bogus step that is added to the start of every workflow. This
 # makes it possible to stop the import while it's running.
 #
 # We only want to stop rows that haven't started processing yet, and hydra
 # immediately queues the first step for every row in the import. By adding a
-# fake step that calls localhost, we can stop the import before the real first
-# step is queued for pending rows.
+# bogus localhost step, we can check for a stop flag before the real first
+# "real" step is queued.
 #
 # Hopefully I can find a better way to do this in the future.
 class BufferStep
