@@ -19,6 +19,7 @@ class Importer
   def initialize(config, workflow, data)
     @config = config
     @id = generate_id
+    @config.id = @id
     config.row_count = data.rows.count
     config.logger = HydraLogger.new(@id)
     @workflow = workflow
