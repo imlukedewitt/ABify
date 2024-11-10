@@ -8,7 +8,6 @@ gem 'dotenv'
 gem 'factory_bot', require: false
 gem 'faker'
 gem 'ffi', '1.17.0'
-gem 'google-cloud-firestore'
 gem 'json'
 gem 'pry'
 gem 'redis'
