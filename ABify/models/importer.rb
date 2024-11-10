@@ -7,6 +7,7 @@ require_relative '../workflows/workflow'
 require_relative '../helpers/csv_writer'
 require_relative '../helpers/utils'
 require_relative '../helpers/string_utils'
+require_relative 'buffer_step'
 
 # An Importer runs a workflow on a set of data
 # The config object is passed to each step to help build requests
@@ -36,12 +37,8 @@ class Importer
   def start
     @status = 'running'
     @keystore.set(@id, summary)
-    puts 'starting import'
-    first_step, *next_steps = @workflow.steps
 
-    @data.rows.each do |row|
-      first_step&.enqueue(row, @hydra, next_steps, @config)
-    end
+    queue_rows
 
     @hydra.run
     @status = 'complete'
@@ -68,5 +65,24 @@ class Importer
       domain: @config.domain,
       data: @data.summary(data: data)
     }
+  end
+
+  private
+
+  def queue_rows
+    @data.rows.each do |row|
+      queue_buffer_step(row)
+    end
+  end
+
+  def queue_buffer_step(row)
+    buffer_step = BufferStep.new(@config)
+    buffer_step.enqueue(row, @hydra, @workflow.steps)
+  end
+
+  def setup_steps
+    @workflow.steps.each do |step|
+      step.config = @config
+    end
   end
 end
