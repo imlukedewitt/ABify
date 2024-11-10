@@ -9,6 +9,8 @@ require 'typhoeus'
 # immediately queues the first step for every row in the import. By adding a
 # fake step that calls localhost, we can stop the import before the real first
 # step is queued for pending rows.
+#
+# Hopefully I can find a better way to do this in the future.
 class BufferStep
   def initialize(config)
     @keystore = config.keystore
