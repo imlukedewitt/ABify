@@ -26,10 +26,10 @@ class Step
   # Queue a step to be run using Typhoeus/Hydra.
   # The response is handled by the StepCallbackHandler
   # Additional steps are queued based on the response
-  def enqueue(row, hydra, next_steps, is_first_step: true)
+  def enqueue(row, hydra, next_steps)
     callback_handler = StepCallbackHandler.new(self, row, next_steps, hydra, @config)
     if @skip&.call(row.data)
-      callback_handler.queue_next_step(is_first_step: is_first_step)
+      callback_handler.queue_next_step
       return
     end
 
