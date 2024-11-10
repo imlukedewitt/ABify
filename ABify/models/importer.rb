@@ -30,6 +30,7 @@ class Importer
     @keystore = config.keystore
 
     @keystore.set(@id, summary)
+    setup_steps
   end
 
   def start
