@@ -39,11 +39,7 @@ class Step
       callback_handler.handle_response(response)
     end
 
-    if is_first_step
-      hydra.queue(request) # Add first step to the end of the queue
-    else
-      hydra.queue_front(request) # Prioritize completing rows before starting new ones
-    end
+    hydra.queue_front(request) # Prioritize completing rows before starting new ones
   end
 
   private
