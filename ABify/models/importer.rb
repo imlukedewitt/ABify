@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'typhoeus'
-require 'securerandom'
 require_relative 'hydra_logger'
 require_relative '../workflows/workflow'
 require_relative '../helpers/csv_writer'
