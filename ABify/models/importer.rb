@@ -19,18 +19,13 @@ class Importer
 
   def initialize(config, workflow, data)
     @config = config
-    @id = generate_id
-    @config.id = @id
-    config.row_count = data.rows.count
-    config.logger = HydraLogger.new(@id)
+    @config.row_count = data.rows.count
     @workflow = workflow
     @data = data
-    @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
-    @status = 'not started'
-    @created_at = Time.now
-    @keystore = config.keystore
-
-    @keystore.set(@id, summary)
+    setup_id_and_logger
+    setup_hydra
+    setup_status_and_time
+    setup_keystore
     setup_steps
   end
 
@@ -104,11 +99,5 @@ class Importer
   def queue_buffer_step(row)
     buffer_step = BufferStep.new(@config)
     buffer_step.enqueue(row, @hydra, @workflow.steps)
-  end
-
-  def setup_steps
-    @workflow.steps.each do |step|
-      step.config = @config
-    end
   end
 end
