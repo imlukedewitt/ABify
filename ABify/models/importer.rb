@@ -69,6 +69,32 @@ class Importer
 
   private
 
+  def setup_id_and_logger
+    @id = generate_id
+    @config.id = @id
+    @config.logger = HydraLogger.new(@id)
+  end
+
+  def setup_hydra
+    @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
+  end
+
+  def setup_status_and_time
+    @status = 'not started'
+    @created_at = Time.now
+  end
+
+  def setup_keystore
+    @keystore = @config.keystore
+    @keystore.set(@id, summary)
+  end
+
+  def setup_steps
+    @workflow.steps.each do |step|
+      step.config = @config
+    end
+  end
+
   def queue_rows
     @data.rows.each do |row|
       queue_buffer_step(row)
