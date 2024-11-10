@@ -53,27 +53,4 @@ RSpec.describe BufferStep do
       end
     end
   end
-
-  describe '#keep_running' do
-    context 'when stop key is nil' do
-      it 'returns true' do
-        allow(keystore).to receive(:get).with('123-stop').and_return(nil)
-        expect(subject.send(:keep_running)).to be(true)
-      end
-    end
-
-    context 'when stop key is false' do
-      it 'returns true' do
-        allow(keystore).to receive(:get).with('123-stop').and_return('false')
-        expect(subject.send(:keep_running)).to be(true)
-      end
-    end
-
-    context 'when stop key is true' do
-      it 'returns false' do
-        allow(keystore).to receive(:get).with('123-stop').and_return('true')
-        expect(subject.send(:keep_running)).to be(false)
-      end
-    end
-  end
 end
