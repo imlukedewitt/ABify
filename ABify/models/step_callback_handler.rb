@@ -33,7 +33,7 @@ class StepCallbackHandler
     end
 
     next_step = @next_steps.first
-    next_step.enqueue(@row, @hydra, @next_steps.drop(1), @config, is_first_step: is_first_step)
+    next_step.enqueue(@row, @hydra, @next_steps.drop(1), is_first_step: is_first_step)
   end
 
   private

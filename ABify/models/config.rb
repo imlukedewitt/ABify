@@ -6,7 +6,7 @@ require_relative '../db/local_keystore'
 # This is used to create HTTP requests and build URLs from template steps
 # (This is only a Class so I can use config.base_url syntax)
 class Config
-  attr_accessor :api_key, :subdomain, :domain, :row_count, :logger, :keystore
+  attr_accessor :api_key, :subdomain, :domain, :row_count, :logger, :keystore, :id
 
   def initialize(api_key:, subdomain:, domain: 'chargify.com', keystore: nil)
     @api_key = api_key

@@ -17,4 +17,10 @@ module StringUtils
   def present?(value)
     !blank?(value)
   end
+
+  def generate_id
+    timestamp = Time.now.utc.strftime('%Y%m%d%H%M%S')
+    unique_id = SecureRandom.hex(4)
+    "#{timestamp}-#{@config.subdomain}-#{unique_id}"
+  end
 end
