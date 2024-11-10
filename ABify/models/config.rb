@@ -2,9 +2,7 @@
 
 require_relative '../db/local_keystore'
 
-# Helper class to store API details
-# This is used to create HTTP requests and build URLs from template steps
-# (This is only a Class so I can use config.base_url syntax)
+# Helper class to store API/Importer details
 class Config
   attr_accessor :api_key, :subdomain, :domain, :row_count, :logger, :keystore, :id
 
