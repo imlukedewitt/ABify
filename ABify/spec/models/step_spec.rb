@@ -59,6 +59,7 @@ RSpec.describe Step do
       before { subject.instance_variable_set(:@skip, ->(_) { false }) }
       it 'queues the request and handles the response' do
         subject.enqueue(row, hydra, next_steps)
+        expect(hydra.queued_requests).not_to be_empty
         hydra.run
 
         expect(callback_handler).to have_received(:handle_response)
@@ -70,7 +71,9 @@ RSpec.describe Step do
 
       it 'skips the step and queues next step' do
         subject.enqueue(row, hydra, next_steps)
+        expect(hydra.queued_requests).to be_empty
 
+        hydra.run
         expect(callback_handler).to have_received(:queue_next_step)
         expect(callback_handler).not_to have_received(:handle_response)
       end
