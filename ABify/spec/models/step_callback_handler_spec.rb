@@ -8,14 +8,15 @@ RSpec.describe StepCallbackHandler do
   let(:step) do
     double(
       'Step',
-      name: 'test-step', required: true,
+      name: 'test-step',
+      required: true,
       response_key: 'test step',
       response_val: ->(res) { res['new_id'] },
       response_text: ->(res, _) { res['new_id'] },
       json: nil
     )
   end
-  let(:row) { instance_double('Row', data: {}, index: 1, requests: [], errors: [], responses: []) }
+  let(:row) { double('Row', data: {}, index: 1, requests: [], errors: [], responses: []) }
   let(:next_steps) { [double('Step')] }
   let(:hydra) { double('Hydra') }
   let(:logger) { double('Logger') }
@@ -30,14 +31,15 @@ RSpec.describe StepCallbackHandler do
   end
   let(:response) { Typhoeus::Response.new(code: 200, return_code: :ok, body: '{"new_id": "111"}') }
 
-  subject { described_class.new(step, row, next_steps, hydra, config) }
-
   before do
     allow(next_steps.first).to receive(:enqueue)
     allow(response).to receive(:request).and_return(request)
     allow(logger).to receive(:log_response)
     allow(row).to receive(:status=) { |value| allow(row).to receive(:status).and_return(value) }
+    allow(row).to receive(:status) { |value| allow(row).to receive(:status).and_return(value) }
   end
+
+  subject { described_class.new(step, row, next_steps, hydra, config) }
 
   describe '#handle_response' do
     context 'when response is successful' do
@@ -50,7 +52,7 @@ RSpec.describe StepCallbackHandler do
       end
     end
 
-    context 'when response is an error' do
+    context 'when step is required and response is an error' do
       let(:error_response) { Typhoeus::Response.new(code: 422, return_code: :ok, body: '{"errors": "Sorry Charlie"}') }
 
       before { allow(error_response).to receive(:request).and_return(request) }
@@ -64,19 +66,22 @@ RSpec.describe StepCallbackHandler do
       end
     end
 
-    # context 'when step is not required and response is an error' do
-    #   before { allow(step).to receive(:required).and_return(false) }
+    context 'when step is not required and response is an error' do
+      let(:error_response) { Typhoeus::Response.new(code: 422, return_code: :ok, body: '{"errors": "Not today Jay"}') }
 
-    #   let(:error_response) { Typhoeus::Response.new(code: 500, return_code: :ok, body: '{"errors": "Server error"}') }
+      before do
+        allow(step).to receive(:required).and_return(false)
+        allow(error_response).to receive(:request).and_return(request)
+      end
 
-    #   it 'processes error but queues next step' do
-    #     subject.handle_response(error_response)
+      it 'processes error and queues next step' do
+        subject.handle_response(error_response)
 
-    #     expect(row.status).to be_nil
-    #     expect(row.errors).to include(hash_including(step: 'test-step', text: 'Server error'))
-    #     expect(next_steps.first).to have_received(:enqueue)
-    #   end
-    # end
+        expect(row.status).not_to eq('error')
+        expect(row.errors).to include(hash_including(step: 'test-step', text: 'Not today Jay', code: 422))
+        expect(next_steps.first).to have_received(:enqueue)
+      end
+    end
   end
 
   # describe '#queue_next_step' do
