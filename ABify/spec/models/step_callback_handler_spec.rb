@@ -84,22 +84,12 @@ RSpec.describe StepCallbackHandler do
     end
   end
 
-  # describe '#queue_next_step' do
-  #   it 'marks row complete if there are no next steps' do
-  #     handler = described_class.new(step, row, [], hydra, config)
-  #     handler.queue_next_step
+  describe '#queue_next_step' do
+    it 'marks row complete if there are no next steps' do
+      handler = described_class.new(step, row, [], hydra, config)
+      handler.queue_next_step
 
-  #     expect(row.status).to eq('complete')
-  #   end
-  # end
-
-  # describe '#store_request' do
-  #   it 'stores the request details in the row' do
-  #     subject.send(:store_request, response)
-
-  #     expect(row.requests).to include(
-  #       hash_including(step: 'test-step', url: response.request.base_url, method: response.request.options[:method])
-  #     )
-  #   end
-  # end
+      expect(row.status).to eq('complete')
+    end
+  end
 end
