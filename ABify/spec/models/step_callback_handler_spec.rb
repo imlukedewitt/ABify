@@ -15,7 +15,7 @@ RSpec.describe StepCallbackHandler do
       json: nil
     )
   end
-  let(:row) { double('Row', data: {}, index: 1, status: nil, requests: [], errors: [], responses: []) }
+  let(:row) { instance_double('Row', data: {}, index: 1, requests: [], errors: [], responses: []) }
   let(:next_steps) { [double('Step')] }
   let(:hydra) { double('Hydra') }
   let(:logger) { double('Logger') }
@@ -34,9 +34,9 @@ RSpec.describe StepCallbackHandler do
 
   before do
     allow(next_steps.first).to receive(:enqueue)
-
     allow(response).to receive(:request).and_return(request)
     allow(logger).to receive(:log_response)
+    allow(row).to receive(:status=) { |value| allow(row).to receive(:status).and_return(value) }
   end
 
   describe '#handle_response' do
@@ -51,6 +51,17 @@ RSpec.describe StepCallbackHandler do
     end
 
     context 'when response is an error' do
+      let(:error_response) { Typhoeus::Response.new(code: 422, return_code: :ok, body: '{"errors": "Sorry Charlie"}') }
+
+      before { allow(error_response).to receive(:request).and_return(request) }
+
+      it 'processes error but does not queue next step' do
+        subject.handle_response(error_response)
+
+        expect(row.status).to eq('error')
+        expect(row.errors).to include(hash_including(step: 'test-step', text: 'Sorry Charlie', code: 422))
+        expect(next_steps.first).not_to have_received(:enqueue)
+      end
     end
 
     # context 'when step is not required and response is an error' do
