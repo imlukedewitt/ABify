@@ -29,7 +29,11 @@ class BufferStep
   private
 
   def buffer_request
-    Typhoeus::Request.new('http://localhost:6789', method: :get)
+    # Stub localhost so we don't actually make a network request
+    response = Typhoeus::Response.new(code: 200, return_code: :ok, body: 'OK')
+    url = 'http://localhost:6789'
+    Typhoeus.stub(url).and_return(response)
+    Typhoeus::Request.new(url, method: :get)
   end
 
   def queue_next_step(steps, row, hydra)

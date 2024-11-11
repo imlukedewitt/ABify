@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'typhoeus'
-require 'json'
 require_relative 'step_callback_handler'
 
 # This class builds/handles import template "steps"
