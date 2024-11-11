@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'typhoeus'
 require_relative '../../models/buffer_step'
 
 RSpec.describe BufferStep do
