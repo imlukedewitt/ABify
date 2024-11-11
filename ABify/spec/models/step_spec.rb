@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'pry'
 require_relative '../../models/step'
 
 RSpec.describe Step do
