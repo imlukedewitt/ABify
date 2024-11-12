@@ -16,4 +16,10 @@ RSpec.describe ImporterController do
     expect(last_response).to be_ok
     expect(last_response.body).to eq('It works!')
   end
+
+  it 'starts an import' do
+    post '/start'
+
+    expect(last_response).to be_ok
+  end
 end

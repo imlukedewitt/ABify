@@ -7,4 +7,7 @@ class ImporterController < Sinatra::Base
   get '/' do
     return 'It works!'
   end
+
+  post '/start' do
+  end
 end
