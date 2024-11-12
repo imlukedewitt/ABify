@@ -31,7 +31,7 @@ RSpec.describe Importer do
     allow(row).to receive(:status).and_return(nil)
     allow(BufferStep).to receive(:new).and_return(buffer_step)
     allow(buffer_step).to receive(:enqueue)
-    allow($stdout).to receive(:puts) # suppress 'puts' output
+    allow($stdout).to receive(:write) # suppress 'puts' output
   end
 
   subject { Importer.new(config, workflow, data) }
