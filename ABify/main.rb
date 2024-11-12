@@ -4,6 +4,7 @@ require 'dotenv'
 require 'json'
 require 'pry'
 require 'sinatra'
+require_relative 'controllers/importer_controller'
 require_relative 'db/redis_client'
 require_relative 'db/local_keystore'
 require_relative 'helpers/utils'
@@ -29,12 +30,10 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
   username == ENV['BASIC_AUTH_USERNAME'] && password == ENV['BASIC_AUTH_PASSWORD']
 end
 
+use ImporterController
+
 # keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
 keystore = LocalKeystore.new
-
-get '/' do
-  'It works!'
-end
 
 # placeholder route to start import
 post '/start' do
