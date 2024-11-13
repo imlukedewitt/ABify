@@ -55,6 +55,18 @@ class ImporterController < Sinatra::Base
   end
 
   post '/stop' do
+    import_id = params[:id]
+    content_type :json
+    status 422 unless import_id
+    return { error: 'Import ID required' }.to_json unless import_id
+
+    importer = LocalKeystore.instance.get(import_id)
+    status 404 unless importer
+    return { error: 'Import ID not found' }.to_json unless importer
+
+    LocalKeystore.instance.set("#{import_id}-stop", true)
+
+    { message: 'stopping', import_id: import_id }.to_json
   end
 
   private
