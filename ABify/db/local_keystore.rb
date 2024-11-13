@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 require 'json'
+require 'singleton'
 
 # placeholder until I get local redis going
 class LocalKeystore
+  include Singleton
   def initialize
     @store = {}
     @mutex = Mutex.new
