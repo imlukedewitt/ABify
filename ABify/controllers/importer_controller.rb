@@ -28,30 +28,16 @@ class ImporterController < Sinatra::Base
     )
 
     request.body.rewind
+    @request = request
     template_name = request.env['HTTP_TEMPLATE']
     source_type = request.env['HTTP_SOURCE_TYPE']
 
-    data = case source_type
-           when 'csv'
-             begin
-               CsvData.new(request.env['HTTP_FILE_PATH'])
-             rescue StandardError => e
-               status 422
-               return { error: "Error loading CSV: #{e.message}" }.to_json
-             end
-           when 'json'
-             JsonData.new(request.body.read)
-           when 'mock'
-             row_count = request.env['HTTP_ROW_COUNT']&.to_i
-             unless row_count
-               status 422
-               return { error: 'Row count required for mock data' }.to_json
-             end
-             MockData.new(template_name, row_count)
-           else
-             status 422
-             return { error: 'Invalid source type' }.to_json
-           end
+    begin
+      data = load_data_by_type
+    rescue StandardError => e
+      status 422
+      return { error: e.message }.to_json
+    end
 
     workflow = BuildWorkflow.for(template_name)
     importer = Importer.new(config, workflow, data)
@@ -62,5 +48,35 @@ class ImporterController < Sinatra::Base
 
     content_type :json
     { message: 'started', import_id: importer.id }.to_json
+  end
+
+  private
+
+  def load_data_by_type
+    {
+      'csv' => method(:load_csv_data),
+      'json' => method(:load_json_data),
+      'mock' => method(:load_mock_data)
+    }.fetch(@request.env['HTTP_SOURCE_TYPE']).call
+  rescue KeyError
+    raise 'Invalid source type'
+  end
+
+  def load_csv_data
+    CsvData.new(@request.env['HTTP_FILE_PATH'])
+  rescue StandardError => e
+    raise "Error loading CSV: #{e.message}"
+  end
+
+  def load_json_data
+    JsonData.new(@request.body.read)
+  end
+
+  def load_mock_data
+    row_count = @request.env['HTTP_ROW_COUNT']&.to_i
+    template_name = @request.env['HTTP_TEMPLATE']
+    raise 'Row count required for mock data' unless row_count&.positive?
+
+    MockData.new(template_name, row_count)
   end
 end
