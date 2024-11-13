@@ -1,2 +1,4 @@
-config/.env
-*.log
+config/*
+log/*
+out/*
+data/*
