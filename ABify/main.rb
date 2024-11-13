@@ -35,42 +35,16 @@ use ImporterController
 # keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
 keystore = LocalKeystore.instance
 
-# get '/status' do
-#   extend Utils
-
+# post '/stop' do
 #   import_id = params[:id]
-#   puts "import id: #{import_id}"
 #   content_type :json
 #   return { error: 'Import ID required' }.to_json unless import_id
 
-#   data = keystore.get(import_id)
-#   status 404 unless data
-#   return { error: 'Import ID not found' }.to_json unless data
+#   importer = keystore.get(import_id)
+#   status 404 unless importer
+#   return { error: 'Import ID not found' }.to_json unless importer
 
-#   data['run_time'] = duration(data[:created_at], data[:completed_at])
-#   data.to_json
+#   keystore.set("#{import_id}-stop", true)
+
+#   { message: 'stopping', import_id: import_id }.to_json
 # end
-
-post '/clear' do
-  import_id = params[:id]
-  content_type :json
-  return { error: 'Import ID required' }.to_json unless import_id
-
-  keystore.del(import_id)
-
-  { message: 'cleared', import_id: import_id }.to_json
-end
-
-post '/stop' do
-  import_id = params[:id]
-  content_type :json
-  return { error: 'Import ID required' }.to_json unless import_id
-
-  importer = keystore.get(import_id)
-  status 404 unless importer
-  return { error: 'Import ID not found' }.to_json unless importer
-
-  keystore.set("#{import_id}-stop", true)
-
-  { message: 'stopping', import_id: import_id }.to_json
-end

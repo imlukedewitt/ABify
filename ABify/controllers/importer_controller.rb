@@ -54,6 +54,9 @@ class ImporterController < Sinatra::Base
     data.to_json
   end
 
+  post '/stop' do
+  end
+
   private
 
   def build_config
