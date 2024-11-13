@@ -1,0 +1,10 @@
+services:
+  abify:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      RUNNING_ON_SERVER: "true"
+      BASIC_AUTH_USERNAME: "admin"
+      BASIC_AUTH_PASSWORD: "islander"
