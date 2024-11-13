@@ -115,4 +115,10 @@ RSpec.describe ImporterController do
     expect(last_response.status).to eq(404)
     expect(last_response.body).to include('Import ID not found')
   end
+
+  it 'it stops an import' do
+    post '/stop', { id: '123' }
+
+    expect(last_response).to be_ok
+  end
 end
