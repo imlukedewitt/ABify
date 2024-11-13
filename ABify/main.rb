@@ -31,20 +31,3 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
 end
 
 use ImporterController
-
-# keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
-keystore = LocalKeystore.instance
-
-# post '/stop' do
-#   import_id = params[:id]
-#   content_type :json
-#   return { error: 'Import ID required' }.to_json unless import_id
-
-#   importer = keystore.get(import_id)
-#   status 404 unless importer
-#   return { error: 'Import ID not found' }.to_json unless importer
-
-#   keystore.set("#{import_id}-stop", true)
-
-#   { message: 'stopping', import_id: import_id }.to_json
-# end
