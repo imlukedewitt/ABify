@@ -16,7 +16,6 @@ class ImporterController < Sinatra::Base
   end
 
   post '/start' do
-    puts 'Starting import...'
     @request = request
     request.body.rewind
 
