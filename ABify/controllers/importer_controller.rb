@@ -11,24 +11,16 @@ require_relative '../workflows/build_workflow'
 
 # ImporterController
 class ImporterController < Sinatra::Base
-  keystore = LocalKeystore.instance
-
   get '/' do
     'It works!'
   end
 
   post '/start' do
     puts 'Starting import...'
-
-    config = Config.new(
-      api_key: request.env['HTTP_APIKEY'],
-      subdomain: request.env['HTTP_SUBDOMAIN'],
-      domain: request.env['HTTP_DOMAIN'],
-      keystore: keystore
-    )
-
-    request.body.rewind
     @request = request
+    request.body.rewind
+
+    config = build_config
 
     begin
       data = load_data_by_type
@@ -49,6 +41,15 @@ class ImporterController < Sinatra::Base
   end
 
   private
+
+  def build_config
+    Config.new(
+      api_key: @request.env['HTTP_APIKEY'],
+      subdomain: @request.env['HTTP_SUBDOMAIN'],
+      domain: @request.env['HTTP_DOMAIN'],
+      keystore: LocalKeystore.instance
+    )
+  end
 
   def load_data_by_type
     {
