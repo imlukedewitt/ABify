@@ -29,7 +29,6 @@ RSpec.describe ImporterController do
   end
 
   before do
-    allow($stdout).to receive(:write)
     allow(BuildWorkflow).to receive(:for).and_return(instance_double('Workflow'))
     allow(MockData).to receive(:new).and_return(instance_double('MockData'))
     allow(CsvData).to receive(:new).and_return(instance_double('CsvData'))
