@@ -43,6 +43,7 @@ class ImporterController < Sinatra::Base
   get '/status' do
     extend Utils
     import_id = params[:id]
+    status 422 unless import_id
     return { error: 'Import ID required' }.to_json unless import_id
 
     data = LocalKeystore.instance.get(import_id)
