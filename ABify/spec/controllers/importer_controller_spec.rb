@@ -117,8 +117,10 @@ RSpec.describe ImporterController do
   end
 
   it 'it stops an import' do
+    allow(LocalKeystore.instance).to receive(:set)
     post '/stop', { id: '123' }
 
     expect(last_response).to be_ok
+    expect(LocalKeystore.instance).to have_received(:set).with('123-stop', true)
   end
 end
