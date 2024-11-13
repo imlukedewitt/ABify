@@ -29,8 +29,6 @@ class ImporterController < Sinatra::Base
 
     request.body.rewind
     @request = request
-    template_name = request.env['HTTP_TEMPLATE']
-    source_type = request.env['HTTP_SOURCE_TYPE']
 
     begin
       data = load_data_by_type
@@ -39,7 +37,7 @@ class ImporterController < Sinatra::Base
       return { error: e.message }.to_json
     end
 
-    workflow = BuildWorkflow.for(template_name)
+    workflow = BuildWorkflow.for(request.env['HTTP_TEMPLATE'])
     importer = Importer.new(config, workflow, data)
 
     Thread.new do
