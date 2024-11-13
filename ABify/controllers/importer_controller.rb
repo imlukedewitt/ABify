@@ -2,6 +2,7 @@
 
 require 'sinatra/base'
 require_relative '../db/local_keystore'
+require_relative '../helpers/utils'
 require_relative '../models/config'
 require_relative '../models/data_sources/csv_source'
 require_relative '../models/data_sources/json_source'
@@ -37,6 +38,19 @@ class ImporterController < Sinatra::Base
 
     content_type :json
     { message: 'started', import_id: importer.id }.to_json
+  end
+
+  get '/status' do
+    extend Utils
+    import_id = params[:id]
+    return { error: 'Import ID required' }.to_json unless import_id
+
+    data = LocalKeystore.instance.get(import_id)
+    status 404 unless data
+    return { error: 'Import ID not found' }.to_json unless data
+
+    data['run_time'] = duration(data[:created_at], data[:completed_at])
+    data.to_json
   end
 
   private

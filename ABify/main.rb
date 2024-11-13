@@ -35,21 +35,21 @@ use ImporterController
 # keystore = RedisClient.new(ENV['REDIS_URL'], ENV['REDIS_USERNAME'], ENV['REDIS_PASSWORD'])
 keystore = LocalKeystore.instance
 
-get '/status' do
-  extend Utils
+# get '/status' do
+#   extend Utils
 
-  import_id = params[:id]
-  puts "import id: #{import_id}"
-  content_type :json
-  return { error: 'Import ID required' }.to_json unless import_id
+#   import_id = params[:id]
+#   puts "import id: #{import_id}"
+#   content_type :json
+#   return { error: 'Import ID required' }.to_json unless import_id
 
-  data = keystore.get(import_id)
-  status 404 unless data
-  return { error: 'Import ID not found' }.to_json unless data
+#   data = keystore.get(import_id)
+#   status 404 unless data
+#   return { error: 'Import ID not found' }.to_json unless data
 
-  data['run_time'] = duration(data[:created_at], data[:completed_at])
-  data.to_json
-end
+#   data['run_time'] = duration(data[:created_at], data[:completed_at])
+#   data.to_json
+# end
 
 post '/clear' do
   import_id = params[:id]
