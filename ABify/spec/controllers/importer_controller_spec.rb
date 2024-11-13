@@ -97,4 +97,11 @@ RSpec.describe ImporterController do
 
     expect(last_response).to be_ok
   end
+
+  it 'returns error for missing import id' do
+    get '/status'
+
+    expect(last_response.status).to eq(422)
+    expect(last_response.body).to include('Import ID required')
+  end
 end
