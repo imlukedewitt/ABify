@@ -96,6 +96,10 @@ RSpec.describe ImporterController do
     get '/status', { id: '123' }
 
     expect(last_response).to be_ok
+    body = JSON.parse(last_response.body)
+    expect(body['id']).to eq('123')
+    expect(body['status']).to eq('complete')
+    expect(body['run_time']).to eq('0h 0m 0.0s')
   end
 
   it 'returns error for missing import id' do
