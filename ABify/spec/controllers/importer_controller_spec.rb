@@ -81,4 +81,20 @@ RSpec.describe ImporterController do
     expect(last_response.status).to eq(422)
     expect(last_response.body).to include('Error loading CSV: CSV load error')
   end
+
+  it 'returns the import status' do
+    time = Time.now
+    allow(LocalKeystore.instance).to receive(:get).and_return(
+      {
+        id: '123',
+        status: 'complete',
+        created_at: time,
+        completed_at: time
+      }
+    )
+
+    get '/status', { id: '123' }
+
+    expect(last_response).to be_ok
+  end
 end
