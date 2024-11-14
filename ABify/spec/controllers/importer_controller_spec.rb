@@ -84,7 +84,7 @@ RSpec.describe ImporterController do
 
   it 'returns the import status' do
     time = Time.now
-    allow(LocalKeystore.instance).to receive(:get).and_return(
+    allow(RedisKeystore.instance).to receive(:get).and_return(
       {
         id: '123',
         status: 'complete',
@@ -110,6 +110,7 @@ RSpec.describe ImporterController do
   end
 
   it 'returns error for missing import data' do
+    allow(RedisKeystore.instance).to receive(:get).and_return(nil)
     get '/status', { id: '123' }
 
     expect(last_response.status).to eq(404)
@@ -117,12 +118,12 @@ RSpec.describe ImporterController do
   end
 
   it 'it stops an import' do
-    allow(LocalKeystore.instance).to receive(:set)
-    allow(LocalKeystore.instance).to receive(:get).and_return({ id: '123' })
+    allow(RedisKeystore.instance).to receive(:set)
+    allow(RedisKeystore.instance).to receive(:get).and_return({ id: '123' })
 
     post '/stop', { id: '123' }
 
     expect(last_response).to be_ok
-    expect(LocalKeystore.instance).to have_received(:set).with('123-stop', true)
+    expect(RedisKeystore.instance).to have_received(:set).with('123-stop', true)
   end
 end
