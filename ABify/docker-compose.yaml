@@ -8,3 +8,10 @@ services:
       RUNNING_ON_SERVER: "true"
       BASIC_AUTH_USERNAME: "admin"
       BASIC_AUTH_PASSWORD: "islander"
+    depends_on:
+      - redis_db
+
+  redis_db:
+    image: redis:latest
+    ports:
+      - "6379:6379"
