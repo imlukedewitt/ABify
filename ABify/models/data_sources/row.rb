@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../../db/redis_keystore'
+
 # A row of data from a data source
 class Row
   attr_accessor :data, :status, :errors, :requests, :responses, :index
@@ -23,5 +25,16 @@ class Row
     }
     summary[:data] = @data if data
     summary
+  end
+
+  def update_keystore(import_id)
+    address = "#{import_id}:#{@index}"
+    keystore.set(address, summary(data: true))
+  end
+
+  private
+
+  def keystore
+    @keystore ||= RedisKeystore.instance
   end
 end
