@@ -10,7 +10,7 @@ require_relative '../../models/step'
 class CreateComponents < Workflow
   def unbuilt_steps
     [
-      lookup_product_family_step,
+      lookup_product_family_id_step,
       create_component_step,
       create_price_point_step
     ]
@@ -18,7 +18,7 @@ class CreateComponents < Workflow
 
   private
 
-  def lookup_product_family_step
+  def lookup_product_family_id_step
     {
       name: 'lookup product family ID',
       required: true,
