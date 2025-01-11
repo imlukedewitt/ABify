@@ -56,7 +56,8 @@ class Step
       body: request_body,
       headers: { 'Content-Type' => 'application/json' },
       userpwd: "#{@config.api_key}:x",
-      timeout: 120
+      timeout: 120,
+      user_agent: 'ABify by Luke'
     )
   end
 end
