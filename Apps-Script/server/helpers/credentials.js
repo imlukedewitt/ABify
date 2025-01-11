@@ -47,6 +47,12 @@ const Credentials = (() => {
     return creds['ABify'];
   }
 
+  function saveABifyCredentials(username, password) {
+    let creds = getCredentials();
+    creds['ABify'] = { username, password };
+    saveCredsToProperties(creds);
+  }
+
   function RedisCredentials() {
     let creds = getCredentials();
     return creds['Redis'];
@@ -58,6 +64,10 @@ const Credentials = (() => {
     saveCredsToProperties(creds);
   }
 
+  const baseUrl = {
+    abify: 'https://abify.onrender.com',
+  }
+
   return {
     getCredentialsForSite,
     storeCredentials,
@@ -65,6 +75,9 @@ const Credentials = (() => {
     getDomain,
     listSites,
     ABifyCredentials,
-    RedisCredentials
+    saveABifyCredentials,
+    RedisCredentials,
+    saveRedisCredentials,
+    baseUrl
   }
 })();
