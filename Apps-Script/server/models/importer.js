@@ -24,15 +24,6 @@ class Importer {
   }
 
   monitor() {
-    Logger.log('Monitoring import');
-    while (1) {
-      const status = Redis.get(this.id);
-      const completedRows = ResultsHandler.getLastCompletedRowIdx(status.data);
-      Logger.log(`Status: ${status.status}, run time: ${status.run_time}, progress: ${completedRows}/${status.data.length}`);
-      if (status.status === 'complete') {
-        return status;
-      }
-      Utilities.sleep(1000);
-    }
+    return this.ABify.monitor(this.id);
   }
 }
