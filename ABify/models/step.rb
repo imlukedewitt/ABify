@@ -6,7 +6,7 @@ require_relative 'step_callback_handler'
 # This class builds/handles import template "steps"
 # Each template can have one or many steps that need to run in sequence
 class Step
-  Typhoeus::Config.user_agent = 'custom user agent'
+  Typhoeus::Config.user_agent = 'ABify by Luke'
 
   attr_reader :skip, :required, :url, :method, :response_key, :response_val, :response_text, :json, :name
   attr_accessor :config
