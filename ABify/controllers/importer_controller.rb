@@ -50,6 +50,7 @@ class ImporterController < Sinatra::Base
     status 404 unless data
     return { error: 'Import ID not found' }.to_json unless data
 
+    content_type :json
     data['run_time'] = duration(data[:created_at], data[:completed_at])
     data.to_json
   end
