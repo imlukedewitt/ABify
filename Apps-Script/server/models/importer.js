@@ -1,7 +1,6 @@
 class Importer {
   constructor(args) {
     Logger.log(`Pinging ABify: ${ABify.wakeUp()}`);
-    Logger.log(`Pinging Redis: ${Redis.wakeUp()}`);
 
     this.id = args.id || this.generateImportID(args);
     this.subdomain = args.subdomain;
