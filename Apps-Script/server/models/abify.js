@@ -1,6 +1,6 @@
 class ABify {
   constructor(args) {
-    this.baseUrl = 'https://smart-template-server.uc.r.appspot.com/';
+    this.baseUrl = 'https://abify.onrender.com/';
     this.creds = args.creds;
   }
 
@@ -27,16 +27,10 @@ class ABify {
     }
   }
 
-  clear(id) {
-    const response = this.sendRequest('clear', 'post', null, { id: id });
-    const responseText = response.getContentText();
-    return JSON.parse(responseText);
-  }
-
   static wakeUp() {
     const creds = Credentials.ABifyCredentials();
     const basicAuth = `${creds.username}:${creds.password}`;
-    const response = UrlFetchApp.fetch('https://smart-template-server.uc.r.appspot.com/', {
+    const response = UrlFetchApp.fetch(this.baseUrl, {
       'method': 'get',
       'muteHttpExceptions': true,
       'headers': { 'Authorization': 'Basic ' + Utilities.base64Encode(basicAuth) }
