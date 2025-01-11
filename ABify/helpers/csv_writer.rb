@@ -8,6 +8,7 @@ require 'json'
 class CSVWriter
   def initialize(import_id)
     @import_id = import_id
+    Dir.mkdir('out') unless Dir.exist?('out')
     @file_path = "out/#{import_id}.csv"
   end
 
