@@ -5,6 +5,7 @@ require 'logger'
 # Logger for Typhoeus/Hydra requests
 class HydraLogger
   def initialize(import_id)
+    Dir.mkdir('log') unless Dir.exist?('log')
     @logger = Logger.new("log/#{import_id}.log")
     @mutex = Mutex.new
     @errors = 0
