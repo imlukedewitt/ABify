@@ -5,13 +5,13 @@ class ABify {
   }
 
   start(data, template) {
-    const response = this.sendRequest('start', 'post', data, null, template);
+    const response = this.sendRequest('/start', 'post', data, null, template);
     const responseText = response.getContentText();
     return JSON.parse(responseText);
   }
 
   status(id) {
-    const response = this.sendRequest('status', 'get', null, { id: id });
+    const response = this.sendRequest('/status', 'get', null, { id: id });
     const responseText = response.getContentText();
     return JSON.parse(responseText);
   }
@@ -30,7 +30,7 @@ class ABify {
   static wakeUp() {
     const creds = Credentials.ABifyCredentials();
     const basicAuth = `${creds.username}:${creds.password}`;
-    const response = UrlFetchApp.fetch(this.baseUrl, {
+    const response = UrlFetchApp.fetch(Credentials.baseUrl.abify, {
       'method': 'get',
       'muteHttpExceptions': true,
       'headers': { 'Authorization': 'Basic ' + Utilities.base64Encode(basicAuth) }
@@ -40,7 +40,7 @@ class ABify {
   }
 
   sendRequest(endpoint, method, payload, params, template = null) {
-    let url = this.baseUrl + endpoint;
+    let url = Credentials.baseUrl.abify + endpoint;
     if (params) {
       const queryString = Object.keys(params)
         .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
@@ -52,6 +52,7 @@ class ABify {
     const headers = {
       "Authorization": "Basic " + Utilities.base64Encode(basicAuth),
       'Content-Type': "application/json",
+      'SOURCE_TYPE': 'json',
       'SUBDOMAIN': this.creds.subdomain,
       'DOMAIN': this.creds.domain,
       'APIKEY': this.creds.apiKey,
