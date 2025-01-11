@@ -42,7 +42,7 @@ class Importer
     puts "\n\ngreat job"
   end
 
-  def summary(data: true)
+  def summary(data: false)
     end_time = @completed_at || Time.now
     run_time = duration(@created_at, end_time)
 
