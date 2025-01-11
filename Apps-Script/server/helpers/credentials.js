@@ -63,6 +63,7 @@ const Credentials = (() => {
     storeCredentials,
     deleteCredentials,
     getDomain,
+    listSites,
     ABifyCredentials,
     RedisCredentials
   }
