@@ -3,6 +3,7 @@
 require 'sinatra/base'
 require_relative '../db/local_keystore'
 require_relative '../helpers/utils'
+require_relative '../helpers/string_utils'
 require_relative '../models/config'
 require_relative '../models/data_sources/csv_source'
 require_relative '../models/data_sources/json_source'
