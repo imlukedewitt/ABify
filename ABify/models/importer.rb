@@ -38,11 +38,11 @@ class Importer
     @status = 'complete'
     @completed_at = Time.now
     @keystore.set(@id, summary)
-    CSVWriter.new(@id).write_import_results(summary(data: true))
+    CSVWriter.new(@id).write_import_results(summary)
     puts "\n\ngreat job"
   end
 
-  def summary(data: false)
+  def summary(data: true)
     end_time = @completed_at || Time.now
     run_time = duration(@created_at, end_time)
     {
