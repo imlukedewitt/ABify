@@ -54,6 +54,7 @@ class ImporterController < Sinatra::Base
 
     data = Marshal.load(Marshal.dump(data)) # deep copy to avoid modifying original data
     data[:run_time] = duration(data[:created_at], data[:completed_at])
+
     remove_original_data = false?(params[:data])
     if remove_original_data && data && data[:data].is_a?(Array)
       data[:data] = data[:data].map do |row|
@@ -61,6 +62,8 @@ class ImporterController < Sinatra::Base
         row
       end
     end
+
+    content_type :json
     data.to_json
   end
 
