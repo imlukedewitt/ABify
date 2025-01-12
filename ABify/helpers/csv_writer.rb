@@ -40,7 +40,7 @@ class CSVWriter
   end
 
   def gather_data_keys(data)
-    data.flat_map { |row| row[:data].keys }.uniq
+    data.flat_map { |row| row[:data]&.keys }.uniq
   end
 
   def build_row(headers, row, response_steps)
