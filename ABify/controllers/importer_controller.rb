@@ -54,8 +54,8 @@ class ImporterController < Sinatra::Base
 
     content_type :json
     data[:run_time] = duration(data[:created_at], data[:completed_at])
-    include_original_data = StringUtils.true?(params[:data])
-    unless include_original_data
+    remove_original_data = false?(params[:data])
+    if remove_original_data && data && data[:data].is_a?(Array)
       data[:data] = data[:data].map do |row|
         row.delete(:data)
         row
