@@ -52,7 +52,7 @@ class ImporterController < Sinatra::Base
     status 404 unless data
     return { error: 'Import ID not found' }.to_json unless data
 
-    content_type :json
+    data = Marshal.load(Marshal.dump(data)) # deep copy to avoid modifying original data
     data[:run_time] = duration(data[:created_at], data[:completed_at])
     remove_original_data = false?(params[:data])
     if remove_original_data && data && data[:data].is_a?(Array)
