@@ -52,7 +52,14 @@ class ImporterController < Sinatra::Base
     return { error: 'Import ID not found' }.to_json unless data
 
     content_type :json
-    data['run_time'] = duration(data[:created_at], data[:completed_at])
+    data[:run_time] = duration(data[:created_at], data[:completed_at])
+    include_original_data = StringUtils.true?(params[:data])
+    unless include_original_data
+      data[:data] = data[:data].map do |row|
+        row.delete(:data)
+        row
+      end
+    end
     data.to_json
   end
 
