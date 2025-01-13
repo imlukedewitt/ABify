@@ -42,6 +42,49 @@ class Sheet {
     });
   }
 
+  writeImportResults(data) {
+    let headers = this.readHeaders();
+    let resultsColumns = new Set(["success", "request"]);
+    data.forEach(row => {
+      row.requests.forEach(request => { resultsColumns.add(`Response (${request.step})`); });
+      row.errors.forEach(error => { resultsColumns.add(`Response (${error.step})`); });
+    });
+    // todo: ensure results columns exist and are in the correct order
+    // for now we will just assume its fine
+
+    let resultsRange = `A1:${String.fromCharCode(65 + resultsColumns.size - 1)}${this.sheet.getLastRow()}`;
+    let resultsData = this.readData(resultsRange);
+    let minIdx = null;
+    let maxIdx = null;
+    data.forEach(row => {
+      const idx = parseInt(row.index) - 1;
+      let currentRow = resultsData[idx];
+      currentRow.success = row.status === 'complete';
+      currentRow.request = JSON.stringify(row.requests);
+      row.responses.forEach(response => {
+        currentRow[`response (${response.step})`] = response.text;
+      });
+      row.errors.forEach(error => {
+        currentRow[`response (${error.step})`] = error.text;
+      });
+      minIdx = minIdx === null ? idx : Math.min(minIdx, idx);
+      maxIdx = maxIdx === null ? idx : Math.max(maxIdx, idx);
+    });
+
+    let range = `A${minIdx + 2}:${String.fromCharCode(65 + resultsColumns.size - 1)}${maxIdx + 2}`;
+    let dataToWrite = resultsData.slice(minIdx, maxIdx + 1);
+    dataToWrite = dataToWrite.map(row => {
+      let newRow = {};
+      resultsColumns.forEach(col => {
+        col = col.toLowerCase();
+        newRow[col] = row[col];
+      });
+      return newRow;
+    });
+
+    this.writeData(dataToWrite, range, false);
+  }
+
   writeData(data, range = null, writeHeaders = true, columnOrder = null) {
     let sheetData = Utils.convertObjTo2DArray(data, writeHeaders);
     let sheetRange = range ? this.sheet.getRange(range) : this.sheet.getRange(1, 1, sheetData.length, sheetData[0].length);
