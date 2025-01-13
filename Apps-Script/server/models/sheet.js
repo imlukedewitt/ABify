@@ -43,7 +43,7 @@ class Sheet {
   }
 
   writeData(data, range = null, writeHeaders = true, columnOrder = null) {
-    let sheetData = Utils.convertObjTo2DArray(data, headers = writeHeaders);
+    let sheetData = Utils.convertObjTo2DArray(data, writeHeaders);
     let sheetRange = range ? this.sheet.getRange(range) : this.sheet.getRange(1, 1, sheetData.length, sheetData[0].length);
 
     let allKeys = [];
