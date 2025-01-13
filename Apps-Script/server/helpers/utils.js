@@ -33,9 +33,25 @@ const Utils = (() => {
     }, {});
   }
 
+  // create a lookup hash from an array of objects
+  function createLookupHash(array, keyOrFn, single = true) {
+    return array.reduce((obj, item) => {
+      const identifier = typeof keyOrFn === 'function' ? keyOrFn(item) : item[keyOrFn];
+      
+      if (single) {
+        obj[identifier] = item;
+      } else {
+        if (!obj[identifier]) obj[identifier] = [];
+        obj[identifier].push(item);
+      }
+      return obj;
+    }, {});
+  }
+
   return {
     convert2DArrayToObj,
     convertObjTo2DArray,
-    trimObj
+    trimObj,
+    createLookupHash
   }
 })();
