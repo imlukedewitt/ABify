@@ -28,6 +28,10 @@ class Sheet {
     return data;
   }
 
+  readHeaders() {
+    return this.sheet.getRange(1, 1, 1, this.sheet.getLastColumn()).getDisplayValues()[0].map(header => String(header).trim().toLowerCase());
+  }
+
   // function to remove rows from data if row.success is true, partial, or "display only". Also remove blank rows
   filterActiveRows() {
     this.data = this.data.filter(row => {
