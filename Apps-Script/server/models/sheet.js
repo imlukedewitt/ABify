@@ -75,11 +75,12 @@ class Sheet {
       batch.forEach(dataRow => {
         let outputRow = [];
         allKeys.forEach(column => {
-          outputRow.push(dataRow[column] === undefined || dataRow[column] === null ? "" : dataRow[column]);
+          let colIdx = allKeys.indexOf(column);
+          outputRow.push(dataRow[colIdx] === undefined || dataRow[colIdx] === null ? "" : dataRow[colIdx]);
         });
         outputData.push(outputRow);
       });
-      Logger.log(`Writing rows ${currentRow} - ${currentRow + outputData.length}`);
+      Logger.log(`Writing rows ${currentRow} - ${currentRow + outputData.length - 1}`);
       this.sheet.getRange(currentRow, currentCol, outputData.length, outputData[0].length).setValues(outputData);
       currentRow += outputData.length;
     }
