@@ -23,7 +23,7 @@ class Sheet {
     let data = sheetRange.getDisplayValues();
     data = Utils.convert2DArrayToObj(data);
     data.forEach((row, idx) => {
-      if (idx > 0) row.index = idx + 1;
+      if (idx > 0) row.index = idx;
     });
     return data;
   }
@@ -37,8 +37,9 @@ class Sheet {
     this.data = this.data.filter(row => {
       let successValue = String(row.success).trim().toLowerCase();
       let displayOnlyRegex = /^\(?display(\s|-)only/i;
-      let blankRow = Object.values(row).every(value => StringUtils.isBlank(value));
-      return !(successValue === 'true' || successValue === 'partial' || displayOnlyRegex.test(successValue) || blankRow);
+      let isDisplayOnly = displayOnlyRegex.test(successValue);
+      let blankRow = Object.keys(row).filter(key => key !== 'index').every(key => StringUtils.isBlank(row[key]));
+      return !(successValue === 'true' || successValue === 'partial' || isDisplayOnly || blankRow);
     });
   }
 
@@ -57,7 +58,7 @@ class Sheet {
     let minIdx = null;
     let maxIdx = null;
     data.forEach(row => {
-      const idx = parseInt(row.index) - 1;
+      const idx = parseInt(row.index);
       let currentRow = resultsData[idx];
       currentRow.success = row.status === 'complete';
       currentRow.request = JSON.stringify(row.requests);
