@@ -21,7 +21,20 @@ class Sheet {
   readData(range = null) {
     let sheetRange = range ? this.sheet.getRange(range) : this.sheet.getDataRange();
     let data = sheetRange.getDisplayValues();
-    return Utils.convert2DArrayToObj(data);
+    data = Utils.convert2DArrayToObj(data);
+    data.forEach((row, idx) => {
+      if (idx > 0) row.index = idx + 1;
+    });
+    return data;
+  }
+
+  // function to remove rows from data if row.success is true, partial, or "display only". Also remove blank rows
+  filterActiveRows() {
+    this.data = this.data.filter(row => {
+      let successValue = String(row.success).trim().toLowerCase();
+      let displayOnlyRegex = /^\(?display(\s|-)only/i;
+      return successValue == 'true' || successValue === 'partial' || !displayOnlyRegex.test(successValue);
+    });
   }
 
   writeData(data, range = null, writeHeaders = true, columnOrder = null) {
