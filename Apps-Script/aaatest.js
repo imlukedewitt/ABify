@@ -6,5 +6,6 @@ function test() {
   importer.sheet.filterActiveRows();
   importer.start();
   const result = importer.monitor();
+  importer.sheet.writeImportResults(result.data);
   Logger.log('great job');
 }
