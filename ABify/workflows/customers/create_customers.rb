@@ -22,13 +22,15 @@ class CreateCustomers < Workflow
     {
       name: 'lookup parent customer',
       required: true,
-      skip: lambda { |row|
-              false?(row['has parent']) || (true?(row['has parent']) && !blank?(row['parent customer id']))
-            },
-      url: lambda { |row, config|
-             parent_reference = URI.encode_www_form_component(row['parent reference'])
-             "#{config.base_url}/customers/lookup.json?reference=#{parent_reference}"
-           },
+      skip:
+        lambda { |row|
+          false?(row['has parent']) || (true?(row['has parent']) && !blank?(row['parent customer id']))
+        },
+      url:
+        lambda { |row, config|
+          parent_reference = URI.encode_www_form_component(row['parent reference'])
+          "#{config.base_url}/customers/lookup.json?reference=#{parent_reference}"
+        },
       method: :get,
       response_key: 'parent customer id',
       response_val: ->(result) { result['customer']['id'] }
@@ -58,11 +60,12 @@ class CreateCustomers < Workflow
       json: Payloads::PaymentProfiles.method(:create_payment_profiles),
       response_key: 'payment_profile_id',
       response_val: ->(result) { result['payment_profile']['id'] },
-      response_text: lambda { |result, config|
-                       customer_id = result['payment_profile']['customer_id']
-                       payment_profile_id = result['payment_profile']['id']
-                       "#{config.base_url}/customers/#{customer_id}/payment_profiles?id=#{payment_profile_id}"
-                     }
+      response_text:
+        lambda { |result, config|
+          customer_id = result['payment_profile']['customer_id']
+          payment_profile_id = result['payment_profile']['id']
+          "#{config.base_url}/customers/#{customer_id}/payment_profiles?id=#{payment_profile_id}"
+        }
     }
   end
 end

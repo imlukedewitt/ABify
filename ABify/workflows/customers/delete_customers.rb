@@ -22,10 +22,11 @@ class DeleteCustomers < Workflow
       name: 'lookup customer by reference',
       required: true,
       skip: ->(row) { present?(row['customer id']) },
-      url: lambda { |row, config|
-        customer_reference = URI.encode_www_form_component(row['customer reference'])
-        "#{config.base_url}/customers/lookup.json?reference=#{customer_reference}"
-      },
+      url:
+        lambda { |row, config|
+          customer_reference = URI.encode_www_form_component(row['customer reference'])
+          "#{config.base_url}/customers/lookup.json?reference=#{customer_reference}"
+        },
       method: :get,
       response_key: 'customer id',
       response_val: ->(result) { result['customer']['id'] }
