@@ -84,6 +84,8 @@ class Sheet {
     });
 
     this.writeData(dataToWrite, range, false);
+    // TODO: write rich-text URLs for responses
+    // https://spreadsheet.dev/add-links-to-a-cell-in-google-sheets-using-apps-script
   }
 
   writeData(data, range = null, writeHeaders = true, columnOrder = null) {
