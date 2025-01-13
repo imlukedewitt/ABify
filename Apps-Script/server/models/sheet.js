@@ -37,7 +37,8 @@ class Sheet {
     this.data = this.data.filter(row => {
       let successValue = String(row.success).trim().toLowerCase();
       let displayOnlyRegex = /^\(?display(\s|-)only/i;
-      return successValue == 'true' || successValue === 'partial' || !displayOnlyRegex.test(successValue);
+      let blankRow = Object.values(row).every(value => StringUtils.isBlank(value));
+      return !(successValue === 'true' || successValue === 'partial' || displayOnlyRegex.test(successValue) || blankRow);
     });
   }
 
