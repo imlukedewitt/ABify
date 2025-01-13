@@ -47,7 +47,7 @@ class Sheet {
     let headers = this.readHeaders();
     let resultsColumns = new Set(["success", "request"]);
     data.forEach(row => {
-      row.requests.forEach(request => { resultsColumns.add(`Response (${request.step})`); });
+      row.responses.forEach(response => { resultsColumns.add(`Response (${response.step})`); });
       row.errors.forEach(error => { resultsColumns.add(`Response (${error.step})`); });
     });
     // todo: ensure results columns exist and are in the correct order
