@@ -22,9 +22,7 @@ class Sheet {
     let sheetRange = range ? this.sheet.getRange(range) : this.sheet.getDataRange();
     let data = sheetRange.getDisplayValues();
     data = Utils.convert2DArrayToObj(data);
-    data.forEach((row, idx) => {
-      if (idx > 0) row.index = idx;
-    });
+    data.forEach((row, idx) => { row.index = idx; });
     return data;
   }
 
@@ -55,11 +53,12 @@ class Sheet {
 
     let resultsRange = `A1:${String.fromCharCode(65 + resultsColumns.size - 1)}${this.sheet.getLastRow()}`;
     let resultsData = this.readData(resultsRange);
+    let resultsDataHash = Utils.createLookupHash(resultsData, 'index');
     let minIdx = null;
     let maxIdx = null;
     data.forEach(row => {
-      const idx = parseInt(row.index);
-      let currentRow = resultsData[idx];
+      let idx = row.index;
+      let currentRow = resultsDataHash[idx];
       currentRow.success = row.status === 'complete';
       currentRow.request = JSON.stringify(row.requests);
       row.responses.forEach(response => {
