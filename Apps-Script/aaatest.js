@@ -7,7 +7,7 @@ function createSubscriptions() {
 }
 
 function test(siteName, template) {
-  let importer = new Importer({
+  const importer = new Importer({
     siteName: siteName,
     template: template
   })
