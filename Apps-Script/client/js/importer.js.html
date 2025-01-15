@@ -1,0 +1,32 @@
+<script>
+  const SUBDOMAINS = {
+    luke: 'luke',
+  };
+
+  $('#import-button').click(function () {
+    const siteName = $('#site-select').val();
+    const subdomain = SUBDOMAINS[siteName];
+    const template = $('#template-select').val();
+    const logSection = $('#log-section');
+    const importButton = $('#import-button');
+    const disableImportButton = () => { importButton.prop('disabled', true); };
+    const enableImportButton = () => { importButton.prop('disabled', false); };
+
+    logSection.html('Importing data...');
+    disableImportButton();
+    google.script.run
+      .withSuccessHandler(function (response) {
+        logSection.html(response);
+        enableImportButton();
+      })
+      .withFailureHandler(function (error) {
+        logSection.html('Error: ' + error.message);
+        enableImportButton();
+      })
+      .startImporter({
+        siteName: siteName,
+        subdomain: subdomain,
+        template: template
+      });
+  });
+</script>

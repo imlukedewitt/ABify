@@ -1,0 +1,44 @@
+<!-- barebones simple html page -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <?!= UI.include('client/css/common.css.html') ?>
+  <?!= UI.include('client/css/importer.css.html') ?>
+</head>
+
+<script> 
+  // wtf
+</script>
+
+<body>
+  <div id="sidebar">
+    <div id="credentials-section" class="section">
+      <h1>Credentials</h1>
+      <select id="site-select">
+        <option value="luke">luke</option>
+      </select>
+    </div>
+
+    <div id="template-section" class="section">
+      <h1>Template</h1>
+      <select id="template-select">
+        <option value="createCustomers">Create Customers</option>
+        <option value="createSubscriptions">Create Subscriptions</option>
+      </select>
+    </div>
+    
+    <div id="import-section" class="section">
+      <h1>Import</h1>
+      <button id="import-button">Import</button>
+    </div>
+
+    <div id="log-section" class="section">
+    </div>
+  </div>
+</body>
+
+<?!= UI.include('client/js/jquery.js.html') ?>
+<?!= UI.include('client/js/importer.js.html') ?>
+
+</html>
