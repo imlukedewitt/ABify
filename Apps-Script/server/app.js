@@ -15,6 +15,7 @@ function startImporter(args) {
   return JSON.stringify(result);
 }
 
+// Allow calling functions from client side
 // https://blog.ohheybrian.com/2022/06/adventures-in-building-an-interactive-apps-script-sidebar/
 function exposeRun(namespace, method, argArray) {
   Logger.log(`exposeRun called with namespace: ${namespace}, method: ${method}, argArray: ${argArray}`);
@@ -25,7 +26,7 @@ function exposeRun(namespace, method, argArray) {
     'UI': UI
   };
 
-  let target = namespace ? (classes[namespace] || this[namespace]) : this;
+  const target = namespace ? (classes[namespace] || this[namespace]) : this;
   if (!target) {
     throw new Error(`Invalid namespace: ${namespace}`);
   }
