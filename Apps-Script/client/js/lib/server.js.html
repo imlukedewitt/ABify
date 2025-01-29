@@ -6,23 +6,22 @@
   https://blog.ohheybrian.com/2022/06/adventures-in-building-an-interactive-apps-script-sidebar/
   https://ramblings.mcpher.com/gassnippets2/using-promises-with-apps-script/
   */
-  var Server = (function (ns) {
 
-    ns.run = function (namespace, method) {
-      let runArgs = Array.prototype.slice.call(arguments).slice(2);
-
-      if (arguments.length < 2) {
-        throw new Error('Need at least a namespace and method.')
+  const Server = (() => {
+    const run = (namespace, method, ...args) => {
+      if (!method) {
+        throw new Error('A method name is required');
       }
 
-      return new Promise(function (resolve, reject) {
-        google.script.run.withFailureHandler(function (err) {
+      return new Promise((resolve, reject) => {
+        google.script.run.withFailureHandler(err => {
           reject(err)
-        }).withSuccessHandler(function (result) {
+        }).withSuccessHandler(result => {
           resolve(result)
-        }).exposeRun(namespace, method, runArgs)
+        }).exposeRun(namespace, method, args)
       })
-    }
-    return ns;
-  })(Server || {})
+    };
+
+    return { run };
+  })();
 </script>
