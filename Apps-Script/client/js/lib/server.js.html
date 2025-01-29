@@ -1,0 +1,28 @@
+<script>
+  /*
+  Run server-side code from the client-side in Google Apps Script.
+
+  More info:
+  https://blog.ohheybrian.com/2022/06/adventures-in-building-an-interactive-apps-script-sidebar/
+  https://ramblings.mcpher.com/gassnippets2/using-promises-with-apps-script/
+  */
+  var Server = (function (ns) {
+
+    ns.run = function (namespace, method) {
+      let runArgs = Array.prototype.slice.call(arguments).slice(2);
+
+      if (arguments.length < 2) {
+        throw new Error('Need at least a namespace and method.')
+      }
+
+      return new Promise(function (resolve, reject) {
+        google.script.run.withFailureHandler(function (err) {
+          reject(err)
+        }).withSuccessHandler(function (result) {
+          resolve(result)
+        }).exposeRun(namespace, method, runArgs)
+      })
+    }
+    return ns;
+  })(Server || {})
+</script>
