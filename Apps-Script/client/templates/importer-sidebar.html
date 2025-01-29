@@ -1,8 +1,8 @@
-<!-- barebones simple html page -->
 <!DOCTYPE html>
 <html>
 
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/themes/light.css" />
   <?!= UI.include('client/css/common.css.html') ?>
   <?!= UI.include('client/css/importer.css.html') ?>
 </head>
@@ -11,30 +11,41 @@
   <div id="sidebar">
     <div id="credentials-section" class="section">
       <h1>Credentials</h1>
-      <select id="site-select">
-        <option value="luke">luke</option>
-      </select>
+      <sl-select placeholder="Select a subdomain" id="site-select">
+        <sl-option value="luke">luke</sl-option>
+      </sl-select>
     </div>
 
-    <div id="template-section" class="section">
-      <h1>Template</h1>
-      <select id="template-select">
-        <option value="createCustomers">Create Customers</option>
-        <option value="createSubscriptions">Create Subscriptions</option>
-      </select>
+    <div id="object-section" class="section">
+      <h1>Object</h1>
+      <sl-select placeholder="Select an object" id="object-select">
+      </sl-select>
     </div>
-    
+
+    <div id="action-select-section" class="section">
+      <h1>Action</h1>
+      <sl-select placeholder="Select an action" id="action-select">
+      </sl-select>
+    </div>
+
+    <div id="template-info-section" class="section">
+      <h3 id="selected-template"></h3>
+      <p id="selected-template-info"></p>
+    </div>
+
     <div id="import-section" class="section">
       <h1>Import</h1>
-      <button id="import-button">Start</button>
+      <sl-button id="import-button" variant="primary">Start</sl-button>
     </div>
 
     <div id="log-section" class="section">
     </div>
   </div>
-</body>
 
-<?!= UI.include('client/js/jquery.js.html') ?>
-<?!= UI.include('client/js/importer.js.html') ?>
+  <?!= UI.include('client/js/jquery.js.html') ?>
+  <?!= UI.include('client/js/importer.js.html') ?>
+  <script type="module"
+    src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.19.1/cdn/shoelace-autoloader.js"></script>
+</body>
 
 </html>
