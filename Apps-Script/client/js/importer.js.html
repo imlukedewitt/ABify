@@ -29,6 +29,9 @@
     UI.setupEventListeners();
     console.log('Waking up ABify');
     Server.run('ABify', 'wakeUp')
-      .then(() => console.log('ABify is awake!'));
+      .then(() => {
+        console.log('ABify is awake');
+        UI.enableImportButton();
+      });
   });
 </script>
