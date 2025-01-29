@@ -1,5 +1,78 @@
 <script>
   const UI = (() => {
+    const OBJECTS = {
+      'Customers': {
+        actions: [
+          {
+            name: 'Create',
+            template: 'createCustomers',
+            info: 'Import customers to AB. A parent customer and payment profile can be specified.',
+            fullName: 'Create Customers'
+          },
+          {
+            name: 'Update',
+            template: 'updateCustomers',
+            info: 'Update existing customers in AB.',
+            fullName: 'Update Customers'
+          }
+        ]
+      },
+      'Subscriptions': {
+        actions: [
+          {
+            name: 'Create',
+            template: 'createSubscriptions',
+            info: 'Import subscriptions to AB.',
+            fullName: 'Create Subscriptions'
+          },
+        ]
+      }
+    };
+
+    function setupEventListeners() {
+      $('#import-button').on('click', startImport);
+      $('#object-select').on('sl-change', () => {
+        populateActions();
+        clearTemplateInfo();
+      });
+      $('#action-select').on('sl-change', updateTemplateInfo);
+    }
+
+    function populateObjects() {
+      const objectSelect = $('#object-select');
+      $.each(OBJECTS, (objectName, object) => {
+        const option = $('<sl-option></sl-option>')
+          .val(objectName)
+          .text(objectName);
+        objectSelect.append(option);
+      });
+    }
+
+    function populateActions() {
+      const objectName = $('#object-select').val();
+      const actionSelect = $('#action-select');
+      actionSelect.empty();
+      $.each(OBJECTS[objectName].actions, (index, action) => {
+        const option = $('<sl-option></sl-option>')
+          .val(action.template)
+          .text(action.name);
+        actionSelect.append(option);
+      });
+    }
+
+    function updateTemplateInfo() {
+      const action = OBJECTS[$('#object-select').val()].actions.find(
+        (action) => action.template === $('#action-select').val()
+      );
+      $('#selected-template').text(action.fullName);
+      $('#selected-template-info').text(action.info);
+    }
+
+    function clearTemplateInfo() {
+      $('#selected-template').text('');
+      $('#selected-template-info').text('');
+    }
+
     function disableImportButton() {
       $('#import-button').prop('disabled', true);
     }
@@ -16,11 +89,38 @@
       $('*').css('cursor', 'progress');
     }
 
+    function logSuccess(response) {
+      response = JSON.parse(response);
+      $('#log-section').html(
+        `<ul>
+            <li>ID: ${response.id}</li>
+            <li>Status: ${response.status}</li>
+            <li>Run Time: ${response.run_time}</li>
+            <li>Row Count: ${response.row_count}</li>
+            <li>Completed Rows: ${response.completed_rows}</li>
+            <li>Failed Rows: ${response.failed_rows}</li>
+            <li>Subdomain: ${response.subdomain}</li>
+            <li>Domain: ${response.domain}</li>
+          </ul>`
+      );
+    }
+
+    function logHtml(html) {
+      $('#log-section').html(html);
+    }
+
     return {
+      setupEventListeners,
+      populateObjects,
+      populateActions,
+      updateTemplateInfo,
+      clearTemplateInfo,
       disableImportButton,
       enableImportButton,
       setCursorLoading,
-      setCursorNormal
+      setCursorNormal,
+      logSuccess,
+      logHtml
     };
   })();
 </script>
