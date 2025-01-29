@@ -27,5 +27,8 @@
   $(document).ready(() => {
     UI.populateObjects();
     UI.setupEventListeners();
+    console.log('Waking up ABify');
+    Server.run('ABify', 'wakeUp')
+      .then(() => console.log('ABify is awake!'));
   });
 </script>
