@@ -3,47 +3,29 @@
     luke: 'luke',
   };
 
-  $('#import-button').click(function () {
+  function startImport() {
     const siteName = $('#site-select').val();
-    const subdomain = SUBDOMAINS[siteName];
-    const template = $('#template-select').val();
-    const logSection = $('#log-section');
-    const importButton = $('#import-button');
-    const disableImportButton = () => { importButton.prop('disabled', true); };
-    const enableImportButton = () => { importButton.prop('disabled', false); };
-    const revertCursor = () => { $('*').css('cursor', 'default'); };
+    UI.logHtml('Importing data...');
+    UI.disableImportButton();
+    UI.setCursorLoading();
 
-    $('*').css('cursor', 'progress');
+    Server.run(null, 'startImporter', {
+      siteName: siteName,
+      subdomain: SUBDOMAINS[siteName],
+      template: $('#action-select').val()
+    }).then((response) => {
+      UI.logSuccess(response);
+      UI.enableImportButton();
+      UI.setCursorNormal();
+    }).catch((error) => {
+      UI.logHtml('Error: ' + error.message);
+      UI.enableImportButton();
+      UI.setCursorNormal();
+    });
+  }
 
-    logSection.html('Importing data...');
-    disableImportButton();
-    google.script.run
-      .withSuccessHandler(function (response) {
-        response = JSON.parse(response);
-        logSection.html(
-          `<ul>
-            <li>ID: ${response.id}</li>
-            <li>Status: ${response.status}</li>
-            <li>Run Time: ${response.run_time}</li>
-            <li>Row Count: ${response.row_count}</li>
-            <li>Completed Rows: ${response.completed_rows}</li>
-            <li>Failed Rows: ${response.failed_rows}</li>
-            <li>Subdomain: ${response.subdomain}</li>
-            <li>Domain: ${response.domain}</li>
-            </ul>`
-        );
-        enableImportButton();
-        revertCursor();
-      })
-      .withFailureHandler(function (error) {
-        logSection.html('Error: ' + error.message);
-        enableImportButton();
-        revertCursor();
-      })
-      .startImporter({
-        siteName: siteName,
-        subdomain: subdomain,
-        template: template
-      });
+  $(document).ready(() => {
+    UI.populateObjects();
+    UI.setupEventListeners();
   });
 </script>
