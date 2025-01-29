@@ -17,11 +17,23 @@ function startImporter(args) {
 
 // https://blog.ohheybrian.com/2022/06/adventures-in-building-an-interactive-apps-script-sidebar/
 function exposeRun(namespace, method, argArray) {
-  var func = (namespace ? this[namespace][method] : this[method]);
-  if(argArray && argArray.length) {
-    return func.apply(this, argArray)
+  Logger.log(`exposeRun called with namespace: ${namespace}, method: ${method}, argArray: ${argArray}`);
+
+  const classes = {
+    'ABify': ABify,
+    'Importer': Importer,
+    'UI': UI
+  };
+
+  let target = namespace ? (classes[namespace] || this[namespace]) : this;
+  if (!target) {
+    throw new Error(`Invalid namespace: ${namespace}`);
   }
-  else {
-    return func();
+
+  const func = target[method];
+  if (!func) {
+    throw new Error(`Method ${method} not found in ${namespace || 'global scope'}`);
   }
+
+  return argArray?.length ? func.apply(this, argArray) : func();
 }
