@@ -1,0 +1,26 @@
+<script>
+  const UI = (() => {
+    function disableImportButton() {
+      $('#import-button').prop('disabled', true);
+    }
+
+    function enableImportButton() {
+      $('#import-button').prop('disabled', false);
+    }
+
+    function setCursorNormal() {
+      $('*').css('cursor', 'default');
+    }
+
+    function setCursorLoading() {
+      $('*').css('cursor', 'progress');
+    }
+
+    return {
+      disableImportButton,
+      enableImportButton,
+      setCursorLoading,
+      setCursorNormal
+    };
+  })();
+</script>
