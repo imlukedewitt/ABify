@@ -5,33 +5,33 @@
 
   function startImport() {
     const siteName = $('#site-select').val();
-    UI.logHtml('Importing data...');
-    UI.disableImportButton();
-    UI.setCursorLoading();
+    ImporterUI.logHtml('Importing data...');
+    ImporterUI.disableImportButton();
+    ImporterUI.setCursorLoading();
 
     Server.run(null, 'startImporter', {
       siteName: siteName,
       subdomain: SUBDOMAINS[siteName],
       template: $('#action-select').val()
     }).then((response) => {
-      UI.logSuccess(response);
-      UI.enableImportButton();
-      UI.setCursorNormal();
+      ImporterUI.logSuccess(response);
+      ImporterUI.enableImportButton();
+      ImporterUI.setCursorNormal();
     }).catch((error) => {
-      UI.logHtml('Error: ' + error.message);
-      UI.enableImportButton();
-      UI.setCursorNormal();
+      ImporterUI.logHtml('Error: ' + error.message);
+      ImporterUI.enableImportButton();
+      ImporterUI.setCursorNormal();
     });
   }
 
   $(document).ready(() => {
-    UI.populateObjects();
-    UI.setupEventListeners();
+    ImporterUI.populateObjects();
+    ImporterUI.setupEventListeners();
     console.log('Waking up ABify');
     Server.run('ABify', 'wakeUp')
       .then(() => {
         console.log('ABify is awake');
-        UI.enableImportButton();
+        ImporterUI.enableImportButton();
       });
   });
 </script>
