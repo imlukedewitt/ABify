@@ -29,12 +29,18 @@ const UI = (() => {
     renderSidebar('client/templates/importer-sidebar.html', 'Import Data');
   }
 
+  function toast(message) {
+    const ui = SpreadsheetApp.getUi();
+    ui.alert(message);
+  }
+
   return {
     include,
     render,
     renderModal,
     renderSidebar,
     createMenu,
-    openImportSidebar
+    openImportSidebar,
+    toast
   }
 })();
