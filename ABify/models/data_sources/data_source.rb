@@ -3,7 +3,9 @@
 # Base class for data sources
 # There can be multiple data sources, each with their own implementation
 class DataSource
-  # Placeholder method to be implemented by subclasses
+  attr_reader :original_data
+
+  # Placeholder method to be handled by subclasses
   def rows
     raise NotImplementedError, 'Subclasses must implement a rows method'
   end
@@ -22,5 +24,11 @@ class DataSource
 
   def failed_row_count
     @rows.select { |row| row.status == 'error' }.count
+  end
+
+  protected
+
+  def store_original_data
+    @original_data = summary(data: true)
   end
 end
