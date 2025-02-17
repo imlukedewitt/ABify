@@ -2,10 +2,11 @@
 
 # A row of data from a data source
 class Row
-  attr_accessor :data, :status, :errors, :requests, :responses, :index
+  attr_accessor :data, :status, :errors, :requests, :responses, :index, :original_data
 
   def initialize(data, index = nil)
     @data = data
+    @original_data = data
     @index = index
     @status = nil
     @errors = []
@@ -13,7 +14,7 @@ class Row
     @responses = []
   end
 
-  def summary(data: false)
+  def summary(data: false, original_data: false)
     summary = {
       index: @index,
       status: @status,
@@ -22,6 +23,7 @@ class Row
       responses: @responses
     }
     summary[:data] = @data if data
+    summary[:data] = @original_data if original_data
     summary
   end
 end
