@@ -25,10 +25,4 @@ class DataSource
   def failed_row_count
     @rows.select { |row| row.status == 'error' }.count
   end
-
-  protected
-
-  def store_original_data
-    @original_data = summary(data: true)
-  end
 end
