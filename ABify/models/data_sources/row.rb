@@ -6,7 +6,7 @@ class Row
 
   def initialize(data, index = nil)
     @data = data
-    @original_data = data
+    @original_data = data.dup
     @index = index
     @status = nil
     @errors = []
