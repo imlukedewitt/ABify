@@ -37,8 +37,12 @@ class CreateSubscriptions < Workflow
       method: :get,
       url: ->(row, config) { "#{config.base_url}/payment_profiles.json?customer_id=#{row['customer id']}" },
       response_key: 'payment profile id',
-      response_val: ->(result) { result.last['payment_profile']['id'] }
+      response_val: ->(result) { last_payment_profile_id(result) }
     }
+  end
+
+  def last_payment_profile_id(result)
+    result.max_by { |profile| profile['payment_profile']['id'].to_i }['payment_profile']['id'] if result.any?
   end
 
   def create_subscription_step
