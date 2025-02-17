@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'csv'
+require_relative '../spec_helper'
 require_relative '../../helpers/csv_writer'
 
 RSpec.describe CSVWriter do

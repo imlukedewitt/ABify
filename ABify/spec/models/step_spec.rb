@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require_relative '../spec_helper'
 require_relative '../../models/step'
 
 RSpec.describe Step do
