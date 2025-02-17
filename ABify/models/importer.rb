@@ -42,7 +42,7 @@ class Importer
     puts "\n\ngreat job"
   end
 
-  def summary(data: true)
+  def summary(data: false, original_data: true)
     end_time = @completed_at || Time.now
     run_time = duration(@created_at, end_time)
     {
@@ -56,7 +56,7 @@ class Importer
       failed_rows: @data.failed_row_count,
       subdomain: @config.subdomain,
       domain: @config.domain,
-      data: @data.summary(data: data)
+      data: @data.summary(data: data, original_data: original_data)
     }
   end
 
