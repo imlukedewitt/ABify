@@ -16,6 +16,8 @@ class MockData < DataSource
       generator = method(:mock_create_customers)
     when 'deleteCustomers'
       generator = method(:mock_delete_customers)
+    when 'createSubscriptions'
+      generator = method(:mock_create_subscriptions)
     else
       raise "Unknown template: #{template}"
     end
@@ -52,6 +54,20 @@ class MockData < DataSource
   def mock_delete_customers
     {
       'customer reference' => Faker::Alphanumeric.alphanumeric(number: 10)
+    }
+  end
+
+  def mock_create_subscriptions
+    next_billing = (Date.today + rand(1..30))
+    {
+      'customer reference' => 'test',
+      'subscription reference' => Faker::Alphanumeric.alphanumeric(number: 8),
+      'product' => 'freemo',
+      'next billing at' => next_billing.strftime('%Y-%m-%d'),
+      'previous billing at' => (next_billing - 30).strftime('%Y-%m-%d'),
+      'component 1' => %w[recurring metered].sample,
+      'component price point 1' => %w[original standard].sample,
+      'component quantity 1' => rand(1..100)
     }
   end
 end

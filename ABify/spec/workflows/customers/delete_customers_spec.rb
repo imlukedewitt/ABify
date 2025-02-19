@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require_relative '../../spec_helper'
 require_relative '../../../workflows/customers/delete_customers'
 
 RSpec.describe DeleteCustomers do

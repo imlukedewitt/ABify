@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'logger'
+require_relative '../spec_helper'
 require_relative '../../models/hydra_logger'
 
 RSpec.describe HydraLogger do

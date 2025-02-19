@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
 require 'csv'
+require_relative '../spec_helper'
 require_relative '../../helpers/csv_writer'
 
 RSpec.describe CSVWriter do
@@ -19,7 +19,7 @@ RSpec.describe CSVWriter do
       failed_rows: 0,
       subdomain: 'luke',
       domain: 'chargify.com',
-      data: [
+      rows: [
         {
           index: 1,
           status: 'complete',
