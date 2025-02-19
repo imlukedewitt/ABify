@@ -19,7 +19,7 @@ RSpec.describe CSVWriter do
       failed_rows: 0,
       subdomain: 'luke',
       domain: 'chargify.com',
-      data: [
+      rows: [
         {
           index: 1,
           status: 'complete',
