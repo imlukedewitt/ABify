@@ -56,7 +56,7 @@ class Importer
       failed_rows: @data.failed_row_count,
       subdomain: @config.subdomain,
       domain: @config.domain,
-      data: @data.summary(data: data, original_data: original_data)
+      rows: @data.summary(data: data, original_data: original_data)
     }
   end
 
