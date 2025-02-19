@@ -45,9 +45,11 @@ RSpec.describe Row do
     end
 
     it 'includes original data when original_data option is true' do
-      row.data = { 'modified' => true }
+      row.data['name'] = 'New Name'
       summary = row.summary(original_data: true)
-      expect(summary[:data]).to eq(data)
+      expect(summary[:data]).to eq({ 'name' => 'Test User', 'email' => 'test@example.com' })
+      expect(row.data['name']).to eq('New Name')
+      expect(row.original_data['name']).to eq('Test User')
     end
   end
 end
