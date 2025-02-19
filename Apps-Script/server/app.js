@@ -11,7 +11,7 @@ function startImporter(args) {
   importer.sheet.filterActiveRows();
   importer.start();
   const result = importer.monitor();
-  importer.sheet.writeImportResults(result.data);
+  importer.sheet.writeImportResults(result.rows);
   return JSON.stringify(result);
 }
 

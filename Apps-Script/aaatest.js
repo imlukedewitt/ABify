@@ -14,6 +14,6 @@ function test(siteName, template) {
   importer.sheet.filterActiveRows();
   importer.start();
   const result = importer.monitor();
-  importer.sheet.writeImportResults(result.data);
+  importer.sheet.writeImportResults(result.rows);
   Logger.log('great job');
 }

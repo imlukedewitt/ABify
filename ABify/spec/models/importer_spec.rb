@@ -65,7 +65,7 @@ RSpec.describe Importer do
         failed_rows: data.failed_row_count,
         subdomain: config.subdomain,
         domain: config.domain,
-        data: data.summary(data: true)
+        rows: data.summary(data: true)
       }
 
       expect(summary).to include(expected_summary)
