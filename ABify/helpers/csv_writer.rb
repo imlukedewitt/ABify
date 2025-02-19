@@ -14,14 +14,13 @@ class CSVWriter
 
   def write_import_results(results)
     headers = ['Status']
-    response_steps = gather_response_steps(results[:data])
+    response_steps = gather_response_steps(results[:rows])
     headers.concat(response_steps.map { |step| "Response (#{step})" })
-    data_keys = gather_data_keys(results[:data])
+    data_keys = gather_data_keys(results[:rows])
     headers.concat(data_keys)
-
     CSV.open(@file_path, 'w') do |csv|
       csv << headers
-      results[:data].each do |row|
+      results[:rows].each do |row|
         csv << build_row(headers, row, response_steps)
       end
     end
