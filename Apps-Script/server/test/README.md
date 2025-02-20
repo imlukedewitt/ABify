@@ -26,29 +26,37 @@ Navigate to the file 'server/test'
 This is a blank template for an individual test file. These are called by `server/test/test-suite.js`.
 
 ```js
-const TestClassName = {
-  test() {
-    const test = new UnitTestingApp();
-    test.enable();
+const TestClassName = (() => {
+  const tester = new UnitTestingApp();
 
+  function test() {
     /* ====================
      *     LOCAL TESTS   
      * ==================== */
-    test.runInGas(false);
-    test.printHeader('ClassName Local Tests');
+    tester.runInGas(false);
+    tester.printHeader('ClassName Local Tests');
+
+    // Local tests go here
 
     /* ====================
      *     ONLINE TESTS 
      * ==================== */
-    test.runInGas(true);
-    test.printHeader('ClassName Online Tests');
+    tester.runInGas(true);
+    tester.printHeader('ClassName Online Tests');
+
+    // Online tests go here
   }
-};
+
+  return {
+    test
+  };
+})();
 
 if (typeof module !== "undefined") {
   const UnitTestingApp = require('../unit-testing-app.js');
   const MockData = require('../mock-data.js');
-  const ClassName = require('../../models/class-name.js');
-  module.exports = TestStringUtils;
+  const ClassName = require('../../helpers/string-utils.js');
+  module.exports = TestClassName;
 }
+
 ```
