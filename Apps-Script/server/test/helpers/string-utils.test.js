@@ -18,6 +18,7 @@ const TestStringUtils = (() => {
     testsForIsTrue(tester);
     testsForIsFalse(tester);
     testsForIsBoolean(tester);
+    testsForGenerateString(tester);
 
     /* ====================
      *     ONLINE TESTS 
@@ -83,7 +84,23 @@ const TestStringUtils = (() => {
 
     tester.assert(() => {
       return nonBlankValues.every(value => !StringUtils.isBoolean(value));
-    }, 'isBoolean returns false for non-blank non-boolean values');
+    }, 'isBoolean returns false for non-boolean values');
+  }
+
+  function testsForGenerateString(tester) {
+    tester.assert(() => {
+      return Array.from({ length: 100 }).every(() => {
+        const str = StringUtils.generateString();
+        return typeof str === 'string' && str.length === 8;
+      });
+    }, 'generateString returns an 8-char string by default');
+
+    tester.assert(() => {
+      return Array.from({ length: 100 }).every(() => {
+        const str = StringUtils.generateString(16);
+        return typeof str === 'string' && str.length === 16;
+      });
+    }, 'generateString returns a string of the specified length');
   }
 
   return {
