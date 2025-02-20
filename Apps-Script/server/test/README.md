@@ -27,9 +27,9 @@ This is a blank template for an individual test file. These are called by `serve
 
 ```js
 const TestClassName = (() => {
-  const tester = new UnitTestingApp();
-
   function test() {
+    const tester = new UnitTestingApp();
+  
     /* ====================
      *     LOCAL TESTS   
      * ==================== */

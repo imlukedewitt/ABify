@@ -1,32 +1,34 @@
 const TestStringUtils = (() => {
-  const tester = new UnitTestingApp();
-
   const blankValues = [null, '', ' ', [], '\n', '\t', '\r'];
   const nonBlankValues = ['a', 0, 1, {}, [1]];
   const trueValues = [true, 'true', 'TRUE', ' true ', 'TRUE ', ' true'];
   const falseValues = [false, 'false', 'FALSE', ' false ', 'FALSE ', ' false'];
-
+  
   function test() {
+    const tester = new UnitTestingApp();
+
     /* ====================
      *     LOCAL TESTS   
      * ==================== */
     tester.runInGas(false);
     tester.printHeader('StringUtils local tests');
 
-    testsForIsBlank();
-    testsForIsPresent();
-    testsForIsTrue();
-    testsForIsFalse();
-    testsForIsBoolean();
+    testsForIsBlank(tester);
+    testsForIsPresent(tester);
+    testsForIsTrue(tester);
+    testsForIsFalse(tester);
+    testsForIsBoolean(tester);
 
     /* ====================
      *     ONLINE TESTS 
      * ==================== */
     tester.runInGas(true);
     tester.printHeader('StringUtils online tests');
+
+    // Online tests go here
   }
 
-  function testsForIsBlank() {
+  function testsForIsBlank(tester) {
     tester.assert(() => {
       return blankValues.every(StringUtils.isBlank);
     }, 'isBlank returns true for blank values');
@@ -36,7 +38,7 @@ const TestStringUtils = (() => {
     }, 'isBlank returns false for non-blank values');
   }
 
-  function testsForIsPresent() {
+  function testsForIsPresent(tester) {
     tester.assert(() => {
       return nonBlankValues.every(StringUtils.isPresent);
     }, 'isPresent returns true for non-blank values');
@@ -46,7 +48,7 @@ const TestStringUtils = (() => {
     }, 'isPresent returns false for blank values');
   }
 
-  function testsForIsTrue() {
+  function testsForIsTrue(tester) {
     tester.assert(() => {
       return trueValues.every(StringUtils.isTrue);
     }, 'isTrue returns true for true values');
@@ -56,7 +58,7 @@ const TestStringUtils = (() => {
     }, 'isTrue returns false for false values');
   }
 
-  function testsForIsFalse() {
+  function testsForIsFalse(tester) {
     tester.assert(() => {
       return falseValues.every(StringUtils.isFalse);
     }, 'isFalse returns true for false values');
@@ -66,7 +68,7 @@ const TestStringUtils = (() => {
     }, 'isFalse returns false for true values');
   }
 
-  function testsForIsBoolean() {
+  function testsForIsBoolean(tester) {
     tester.assert(() => {
       return trueValues.every(StringUtils.isBoolean);
     }, 'isBoolean returns true for true values');
