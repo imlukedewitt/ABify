@@ -1,7 +1,6 @@
 const TestStringUtils = {
   test() {
     const test = new UnitTestingApp();
-    console.log(test.isEnabled);
     test.enable();
 
     // LOCAL TESTS

@@ -10,5 +10,7 @@ const TestSuite = {
 };
 
 if (typeof module !== "undefined") {
-  module.exports = TestSuite;
+  UnitTestingApp = require('./unit-testing-app.js');
+  TestStringUtils = require('./helpers/string-utils.test.js');
+  TestSuite.run();
 }
