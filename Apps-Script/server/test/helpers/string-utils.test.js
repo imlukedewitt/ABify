@@ -24,7 +24,7 @@ const TestStringUtils = (() => {
      *     ONLINE TESTS 
      * ==================== */
     tester.runInGas(true);
-
+    // tester.printHeader('StringUtils Online Tests');
     // Online tests go here
   }
 
