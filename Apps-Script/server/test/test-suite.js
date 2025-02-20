@@ -10,6 +10,7 @@ const TestSuite = (() => {
     console.log('running server tests\n');
 
     TestStringUtils.test();
+    TestUtils.test();
   }
 
   return {
@@ -21,5 +22,6 @@ const TestSuite = (() => {
 if (typeof module !== "undefined") {
   UnitTestingApp = require('./unit-testing-app.js');
   TestStringUtils = require('./helpers/string-utils.test.js');
+  TestUtils = require('./helpers/utils.test.js');
   TestSuite.run();
 }
