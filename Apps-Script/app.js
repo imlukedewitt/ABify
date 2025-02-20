@@ -7,7 +7,6 @@
 // to be run from the web UI
 
 function gasTests() {
-  Logger.log('running gas tests');
   TestSuite.run();
 }
 
