@@ -4,7 +4,6 @@ const TestSuite = {
     test.enable();
     test.clearConsole();
     
-    // Add all test runs here
     TestStringUtils.test();
   }
 };
