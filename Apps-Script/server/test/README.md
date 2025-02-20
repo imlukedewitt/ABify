@@ -35,13 +35,13 @@ const TestClassName = {
      *     LOCAL TESTS   
      * ==================== */
     test.runInGas(false);
-    test.printHeader('StringUtils local tests');
+    test.printHeader('ClassName Local Tests');
 
     /* ====================
      *     ONLINE TESTS 
      * ==================== */
     test.runInGas(true);
-    test.printHeader('StringUtils online tests');
+    test.printHeader('ClassName Online Tests');
   }
 };
 
