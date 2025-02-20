@@ -11,7 +11,7 @@ const TestStringUtils = (() => {
      *     LOCAL TESTS   
      * ==================== */
     tester.runInGas(false);
-    tester.printHeader('StringUtils local tests');
+    tester.printHeader('StringUtils Local Tests');
 
     testsForIsBlank(tester);
     testsForIsPresent(tester);
@@ -24,7 +24,6 @@ const TestStringUtils = (() => {
      *     ONLINE TESTS 
      * ==================== */
     tester.runInGas(true);
-    tester.printHeader('StringUtils online tests');
 
     // Online tests go here
   }
