@@ -1,5 +1,5 @@
 // helper functions for working with objects
-const Utils = (() => {
+Utils = (() => {
   // convert 2D array to object (for reading data from a sheet)
   function convert2DArrayToObj(array) {
     let headers = array[0].map(header => header.toLowerCase().trim());
@@ -23,7 +23,7 @@ const Utils = (() => {
   // recursively remove empty strings, null, empty arrays, and empty objects
   function trimObj(obj) {
     return Object.entries(obj).reduce((newObj, [key, value]) => {
-      const cleanedValue = (typeof value === 'object' && value !== null && !Array.isArray(value)) ? trimPayload(value) : value;
+      const cleanedValue = (typeof value === 'object' && value !== null && !Array.isArray(value)) ? trimObj(value) : value;
 
       if (cleanedValue !== null && cleanedValue !== '' && (!Array.isArray(cleanedValue) || cleanedValue.length > 0) && (typeof cleanedValue !== 'object' || Object.keys(cleanedValue).length > 0)) {
         newObj[key] = cleanedValue;
