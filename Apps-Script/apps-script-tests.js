@@ -7,6 +7,21 @@ function gasTests() {
   TestSuite.run();
 }
 
+function debugStoreCredentials() {
+  Credentials.storeCredentials(
+    'abify debug credentials',
+    'subdomain',
+    'domain.com',
+    '1234567890',
+    '0987654321'
+  );
+}
+
+function debugGetCredsForSite() {
+  const creds = Credentials.getCredentialsForSite('abify debug credentials', '0987654321');
+  Logger.log(creds);
+}
+
 function debugCreateCustomers() {
   debugImport('luke', 'createCustomers');
 }
