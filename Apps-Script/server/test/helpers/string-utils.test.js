@@ -23,7 +23,7 @@ const TestStringUtils = (() => {
     /* ====================
      *     ONLINE TESTS 
      * ==================== */
-    tester.runInGas(true);
+    // tester.runInGas(true);
     // tester.printHeader('StringUtils Online Tests');
     // Online tests go here
   }
@@ -108,8 +108,8 @@ const TestStringUtils = (() => {
 })();
 
 if (typeof module !== "undefined") {
-  const UnitTestingApp = require('../unit-testing-app.js');
-  const MockData = require('../mock-data.js');
-  const StringUtils = require('../../helpers/string-utils.js');
+  UnitTestingApp = require('../unit-testing-app.js');
+  MockData = require('../mock-data.js');
+  StringUtils = require('../../helpers/string-utils.js');
   module.exports = TestStringUtils;
 }

@@ -122,7 +122,7 @@ const TestUtils = (() => {
 })();
 
 if (typeof module !== "undefined") {
-  const UnitTestingApp = require('../unit-testing-app.js');
-  const Utils = require('../../helpers/utils.js');
+  UnitTestingApp = require('../unit-testing-app.js');
+  Utils = require('../../helpers/utils.js');
   module.exports = TestUtils;
 }
