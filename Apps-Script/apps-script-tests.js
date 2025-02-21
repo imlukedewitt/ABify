@@ -1,9 +1,6 @@
-// This isn't really the main app file.
-// See client/ and server/ for the actual code
-//
 // The Apps Script web editor files are sorted alphabetically.
 // This file is displayed by default when the web UI is opened.
-// For convenience, this file contains a debugging functions
+// For convenience, it contains a few misc debugging functions
 // to be run from the web UI
 
 function gasTests() {
