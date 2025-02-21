@@ -1,5 +1,5 @@
 // helper functions for working with objects
-Utils = (() => {
+const Utils = (() => {
   // convert 2D array to object (for reading data from a sheet)
   function convert2DArrayToObj(array) {
     let headers = array[0].map(header => header.toLowerCase().trim());
@@ -55,3 +55,5 @@ Utils = (() => {
     createLookupHash
   }
 })();
+
+if (typeof module !== 'undefined') module.exports = Utils;

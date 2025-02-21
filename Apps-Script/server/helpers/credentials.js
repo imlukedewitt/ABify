@@ -81,3 +81,5 @@ const Credentials = (() => {
     baseUrl
   }
 })();
+
+if (typeof module !== 'undefined') module.exports = Credentials;
