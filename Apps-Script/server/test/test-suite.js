@@ -7,8 +7,8 @@ const TestSuite = (() => {
     const test = new UnitTestingApp();
     test.enable();
     test.clearConsole();
-    console.log('running server tests\n');
 
+    TestCredentials.test();
     TestStringUtils.test();
     TestUtils.test();
   }
@@ -21,6 +21,7 @@ const TestSuite = (() => {
 
 if (typeof module !== "undefined") {
   UnitTestingApp = require('./unit-testing-app.js');
+  TestCredentials = require('./helpers/credentials.test.js');
   TestStringUtils = require('./helpers/string-utils.test.js');
   TestUtils = require('./helpers/utils.test.js');
   TestSuite.run();
