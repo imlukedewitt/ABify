@@ -108,6 +108,11 @@ let UnitTestingApp = (function () {
       console.log('*********************');
     }
 
+    log(text) {
+      if(this.isInGas !== this.runningInGas) return;
+      console.log(text);
+    }
+
     /**
      * Adds a new test to the prototype of the class
      * @param {String} name the name of the function
