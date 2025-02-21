@@ -1,4 +1,3 @@
-// jshint esversion: 8
 /**
  * Stores mock data that's not available locally to enable offline testing. 
  */
@@ -50,4 +49,4 @@ let MockData = (function() {
   return MockData;
 })();
 
-if (typeof module !== 'undefined') module.exports = MockData;
+if (typeof module !== "undefined") module.exports = MockData;

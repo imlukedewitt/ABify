@@ -1,13 +1,6 @@
-//jshint esversion: 9
-
-/************************
- * TESTS
- ************************/
-
 /**
  * Class for running unit tests
  */
-
 let UnitTestingApp = (function () {
 
   const _enabled = new WeakMap();
