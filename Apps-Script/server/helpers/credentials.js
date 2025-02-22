@@ -7,7 +7,7 @@ const Credentials = (() => {
   function getCredentialsForSite(siteName, spreadsheetID = null) {
     if (!spreadsheetID) { spreadsheetID = Spreadsheet.getID(); }
     let creds = getCredentials();
-    return creds[`${spreadsheetID}-${siteName}`];
+    return creds[`${spreadsheetID}-${siteName}`] || null;
   }
 
   function listSites(spreadsheetID = null) {
