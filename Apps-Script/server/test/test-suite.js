@@ -8,9 +8,25 @@ const TestSuite = (() => {
     test.enable();
     test.clearConsole();
 
+    test.addNewTest('areObjectsEqual', areObjectsEqual)
+
     TestCredentials.test();
     TestStringUtils.test();
     TestUtils.test();
+  }
+
+  function areObjectsEqual(obj1, obj2) {
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object') {
+      throw new Error('Both arguments must be objects');
+    }
+    
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) return false;
+    for (let key of keys1) { if (obj1[key] !== obj2[key]) return false; }
+    for (let key of keys2) { if (obj1[key] !== obj2[key]) return false; }
+    return true;
   }
 
   return {
