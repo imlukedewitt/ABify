@@ -9,11 +9,11 @@ let UnitTestingApp = (function () {
   class UnitTestingApp {
     constructor() {
       if (UnitTestingApp.instance) return UnitTestingApp.instance;
-      
+
       _enabled.set(this, false);
       _runningInGas.set(this, false);
       UnitTestingApp.instance = this;
-      
+
       return UnitTestingApp.instance;
     }
 
@@ -24,9 +24,9 @@ let UnitTestingApp = (function () {
     disable() {
       _enabled.set(this, false);
     }
-    
+
     get isEnabled() {
-      return _enabled.get(this);      
+      return _enabled.get(this);
     }
 
     get isInGas() {
@@ -47,18 +47,18 @@ let UnitTestingApp = (function () {
 
     /**
      * Tests whether conditions pass or not
-     * @param {Boolean | Function} condition - The condition to check
      * @param {String} message - the message to display in the onsole
+     * @param {Boolean | Function} condition - The condition to check
      * @return {void}
      */
-    assert(condition, message) {
-      if(!_enabled.get(this)) return;
-      if(this.isInGas !== this.runningInGas) return;
+    assert(message, condition) {
+      if (!_enabled.get(this)) return;
+      if (this.isInGas !== this.runningInGas) return;
       try {
         if ("function" === typeof condition) condition = condition();
         if (condition) console.log(`✔ PASSED: ${message}`);
         else console.log(`❌ FAILED: ${message}`);
-      } catch(err) {
+      } catch (err) {
         console.log(`❌ FAILED: ${message} (${err})`);
       }
     }
@@ -90,14 +90,14 @@ let UnitTestingApp = (function () {
     
     /**
      * Tests functions that throw error messages
+     * @param {String} message - the message to display in the console
      * @param {Function} callback - the function that you expect to return the error message
      * @param {String} errorMessage - the error message you are expecting
-     * @param {String} message - the message to display in the console
      * @return {void}
      */
-    catchErr(callback, errorMessage, message) {
-      if(!_enabled.get(this)) return;
-      if(this.isInGas !== this.runningInGas) return;
+    catchErr(message, callback, errorMessage) {
+      if (!_enabled.get(this)) return;
+      if (this.isInGas !== this.runningInGas) return;
       let error;
       let isCaught = false;
       try {
@@ -112,29 +112,30 @@ let UnitTestingApp = (function () {
 
     /**
      * Tests whether an the argument is a 2d array
+     * @param {String} message - the message to display in the console
      * @param {*[][]} array - any 2d-array
      * @returns {Boolean}
      */
-    is2dArray(array, message) {
-      if(!_enabled.get(this)) return;
-      if(this.isInGas !== this.runningInGas) return;
+    is2dArray(message, array) {
+      if (!_enabled.get(this)) return;
+      if (this.isInGas !== this.runningInGas) return;
       try {
         if (typeof array === 'function') array = array();
         this.assert(Array.isArray(array) && Array.isArray(array[0]), message);
-      } catch(err) {
+      } catch (err) {
         this.assert(false, `${message}: ${err}`);
       }
     }
 
     printHeader(text) {
-      if(this.isInGas !== this.runningInGas) return;  
-      console.log('*********************');
+      if (this.isInGas !== this.runningInGas) return;
+      console.log('\n*********************');
       console.log('* ' + text);
       console.log('*********************');
     }
 
     log(text) {
-      if(this.isInGas !== this.runningInGas) return;
+      if (this.isInGas !== this.runningInGas) return;
       console.log(text);
     }
 
