@@ -19,7 +19,6 @@ let MockData = (function() {
      * @returns {this}
      */
     addData(key, value) {
-      if (_registry.get(this)[key]) throw new Error(`Key ${key} already exists`);
       if (typeof key !== 'string') throw new Error('The key must be of type string');
       _registry.get(this)[key] = value;
       return this; 
