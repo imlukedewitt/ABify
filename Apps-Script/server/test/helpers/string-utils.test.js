@@ -3,103 +3,88 @@ const TestStringUtils = (() => {
   const nonBlankValues = ['a', 0, 1, {}, [1]];
   const trueValues = [true, 'true', 'TRUE', ' true ', 'TRUE ', ' true'];
   const falseValues = [false, 'false', 'FALSE', ' false ', 'FALSE ', ' false'];
-  
+
   function test() {
     const tester = new UnitTestingApp();
 
-    /* ====================
-     *     LOCAL TESTS   
-     * ==================== */
     tester.runInGas(false);
-    tester.printHeader('StringUtils Local Tests');
+    tester.printHeader('StringUtils');
 
-    testsForIsBlank(tester);
-    testsForIsPresent(tester);
-    testsForIsTrue(tester);
-    testsForIsFalse(tester);
-    testsForIsBoolean(tester);
-    testsForGenerateString(tester);
-
-    /* ====================
-     *     ONLINE TESTS 
-     * ==================== */
-    // tester.runInGas(true);
-    // tester.printHeader('StringUtils Online Tests');
-    // Online tests go here
-  }
-
-  function testsForIsBlank(tester) {
-    tester.assert(() => {
-      return blankValues.every(StringUtils.isBlank);
-    }, 'isBlank returns true for blank values');
-
-    tester.assert(() => {
-      return nonBlankValues.every(value => !StringUtils.isBlank(value));
-    }, 'isBlank returns false for non-blank values');
-  }
-
-  function testsForIsPresent(tester) {
-    tester.assert(() => {
-      return nonBlankValues.every(StringUtils.isPresent);
-    }, 'isPresent returns true for non-blank values');
-
-    tester.assert(() => {
-      return blankValues.every(value => !StringUtils.isPresent(value));
-    }, 'isPresent returns false for blank values');
-  }
-
-  function testsForIsTrue(tester) {
-    tester.assert(() => {
-      return trueValues.every(StringUtils.isTrue);
-    }, 'isTrue returns true for true values');
-
-    tester.assert(() => {
-      return falseValues.every(value => !StringUtils.isTrue(value));
-    }, 'isTrue returns false for false values');
-  }
-
-  function testsForIsFalse(tester) {
-    tester.assert(() => {
-      return falseValues.every(StringUtils.isFalse);
-    }, 'isFalse returns true for false values');
-
-    tester.assert(() => {
-      return trueValues.every(value => !StringUtils.isFalse(value));
-    }, 'isFalse returns false for true values');
-  }
-
-  function testsForIsBoolean(tester) {
-    tester.assert(() => {
-      return trueValues.every(StringUtils.isBoolean);
-    }, 'isBoolean returns true for true values');
-
-    tester.assert(() => {
-      return falseValues.every(StringUtils.isBoolean);
-    }, 'isBoolean returns true for false values');
-
-    tester.assert(() => {
-      return blankValues.every(value => !StringUtils.isBoolean(value));
-    }, 'isBoolean returns false for blank values');
-
-    tester.assert(() => {
-      return nonBlankValues.every(value => !StringUtils.isBoolean(value));
-    }, 'isBoolean returns false for non-boolean values');
-  }
-
-  function testsForGenerateString(tester) {
-    tester.assert(() => {
-      return Array.from({ length: 100 }).every(() => {
-        const str = StringUtils.generateString();
-        return typeof str === 'string' && str.length === 8;
+    tester.describe('isBlank()', () => {
+      tester.assert('it returns true for blank values', () => {
+        return blankValues.every(StringUtils.isBlank);
       });
-    }, 'generateString returns an 8-char string by default');
 
-    tester.assert(() => {
-      return Array.from({ length: 100 }).every(() => {
-        const str = StringUtils.generateString(16);
-        return typeof str === 'string' && str.length === 16;
+      tester.assert('it returns false for non-blank values', () => {
+        return nonBlankValues.every(value => !StringUtils.isBlank(value));
       });
-    }, 'generateString returns a string of the specified length');
+    });
+
+    tester.describe('isPresent()', () => {
+      tester.assert('it returns true for non-blank values', () => {
+        return nonBlankValues.every(StringUtils.isPresent);
+      });
+
+      tester.assert('it returns false for blank values', () => {
+        return blankValues.every(value => !StringUtils.isPresent(value));
+      });
+    });
+
+    tester.describe('isTrue()', () => {
+      tester.assert('it returns true for true values', () => {
+        return trueValues.every(StringUtils.isTrue);
+      });
+
+      tester.assert('it returns false for false values', () => {
+        return falseValues.every(value => !StringUtils.isTrue(value));
+      });
+    });
+
+    tester.describe('isFalse()', () => {
+      tester.assert('it returns true for false values', () => {
+        return falseValues.every(StringUtils.isFalse);
+      });
+
+      tester.assert('it returns false for true values', () => {
+        return trueValues.every(value => !StringUtils.isFalse(value));
+      });
+    });
+
+    // testsForIsBoolean(tester);
+    tester.describe('isBoolean()', () => {
+      tester.assert('it returns true for true values', () => {
+        return trueValues.every(StringUtils.isBoolean);
+      });
+
+      tester.assert('it returns true for false values', () => {
+        return falseValues.every(StringUtils.isBoolean);
+      });
+
+      tester.assert('it returns false for blank values', () => {
+        return blankValues.every(value => !StringUtils.isBoolean(value));
+      });
+
+      tester.assert('it returns false for non-boolean values', () => {
+        return nonBlankValues.every(value => !StringUtils.isBoolean(value));
+      });
+    });
+
+    // testsForGenerateString(tester);
+    tester.describe('generateString()', () => {
+      tester.assert('generateString returns an 8-char string by default', () => {
+        return Array.from({ length: 100 }).every(() => {
+          const str = StringUtils.generateString();
+          return typeof str === 'string' && str.length === 8;
+        });
+      });
+
+      tester.assert('generateString returns a string of the specified length', () => {
+        return Array.from({ length: 100 }).every(() => {
+          const str = StringUtils.generateString(16);
+          return typeof str === 'string' && str.length === 16;
+        });
+      });
+    });
   }
 
   return {

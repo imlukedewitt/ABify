@@ -32,88 +32,73 @@ const TestUtils = (() => {
   function test() {
     const tester = new UnitTestingApp();
 
-    /* ====================
-     *     LOCAL TESTS   
-     * ==================== */
     tester.runInGas(false);
-    tester.printHeader('Utils Local Tests');
+    tester.printHeader('Utils');
 
-    testsForConvert2DArrayToObj(tester);
-    testsForConvertObjTo2DArray(tester);
-    testsForTrimObj(tester);
-    testsForCreateLookupHash(tester);
+    tester.describe('convert2DArrayToObj()', () => {
+      tester.assert('converts array to object correctly', () => {
+        const result = Utils.convert2DArrayToObj(sampleArray);
+        return result.length === 2 &&
+          result[0].name === 'John' &&
+          result[1].city === 'LA';
+      });
 
-    /* ====================
-     *     ONLINE TESTS 
-     * ==================== */
-    tester.runInGas(true);
-    // tester.printHeader('Utils Online Tests');
-    // Online tests go here
-  }
+      tester.assert('handles whitespace in headers', () => {
+        const arrayWithSpaces = [
+          [' Name ', ' Age ', ' City '],
+          ['John', 25, 'NY']
+        ];
+        const result = Utils.convert2DArrayToObj(arrayWithSpaces);
+        return result[0].name === 'John';
+      });
+    });
 
-  function testsForConvert2DArrayToObj(tester) {
-    tester.assert(() => {
-      const result = Utils.convert2DArrayToObj(sampleArray);
-      return result.length === 2 &&
-        result[0].name === 'John' &&
-        result[1].city === 'LA';
-    }, 'convert2DArrayToObj converts array to object correctly');
+    tester.describe('convertObjTo2DArray()', () => {
+      tester.assert('converts object to array with headers', () => {
+        const result = Utils.convertObjTo2DArray(sampleObject);
+        return result.length === 3 &&
+          result[0].includes('name') &&
+          result[1].includes('John');
+      });
 
-    tester.assert(() => {
-      const arrayWithSpaces = [
-        [' Name ', ' Age ', ' City '],
-        ['John', 25, 'NY']
-      ];
-      const result = Utils.convert2DArrayToObj(arrayWithSpaces);
-      return result[0].name === 'John';
-    }, 'convert2DArrayToObj handles whitespace in headers');
-  }
+      tester.assert('respects includeHeaders parameter', () => {
+        const result = Utils.convertObjTo2DArray(sampleObject, false);
+        return result.length === 2 &&
+          !result[0].includes('name');
+      });
+    });
 
-  function testsForConvertObjTo2DArray(tester) {
-    tester.assert(() => {
-      const result = Utils.convertObjTo2DArray(sampleObject);
-      return result.length === 3 &&
-        result[0].includes('name') &&
-        result[1].includes('John');
-    }, 'convertObjTo2DArray converts object to array with headers');
+    tester.describe('trimObj()', () => {
+      tester.assert('removes empty values and maintains structure', () => {
+        const result = Utils.trimObj(messyObject);
+        return !result.hasOwnProperty('empty') &&
+          !result.hasOwnProperty('nullValue') &&
+          !result.hasOwnProperty('emptyArray') &&
+          !result.hasOwnProperty('emptyObject') &&
+          !result.nested.hasOwnProperty('empty') &&
+          !result.nested.hasOwnProperty('nullValue');
+      });
+    });
 
-    tester.assert(() => {
-      const result = Utils.convertObjTo2DArray(sampleObject, false);
-      return result.length === 2 &&
-        !result[0].includes('name');
-    }, 'convertObjTo2DArray respects includeHeaders parameter');
-  }
+    tester.describe('createLookupHash()', () => {
+      tester.assert('creates single-item lookup', () => {
+        const result = Utils.createLookupHash(arrayForLookup, 'id');
+        return Object.keys(result).length === 3 &&
+          result[1].name === 'John';
+      });
 
-  function testsForTrimObj(tester) {
-    tester.assert(() => {
-      const result = Utils.trimObj(messyObject);
-      return !result.hasOwnProperty('empty') &&
-        !result.hasOwnProperty('nullValue') &&
-        !result.hasOwnProperty('emptyArray') &&
-        !result.hasOwnProperty('emptyObject') &&
-        !result.nested.hasOwnProperty('empty') &&
-        !result.nested.hasOwnProperty('nullValue');
-    }, 'trimObj removes empty values and maintains structure');
-  }
+      tester.assert('creates multi-item lookup', () => {
+        const result = Utils.createLookupHash(arrayForLookup, 'name', false);
+        return result['John'].length === 2 &&
+          result['Jane'].length === 1;
+      });
 
-  function testsForCreateLookupHash(tester) {
-    tester.assert(() => {
-      const result = Utils.createLookupHash(arrayForLookup, 'id');
-      return Object.keys(result).length === 3 &&
-        result[1].name === 'John';
-    }, 'createLookupHash creates single-item lookup');
-
-    tester.assert(() => {
-      const result = Utils.createLookupHash(arrayForLookup, 'name', false);
-      return result['John'].length === 2 &&
-        result['Jane'].length === 1;
-    }, 'createLookupHash creates multi-item lookup');
-
-    tester.assert(() => {
-      const result = Utils.createLookupHash(arrayForLookup, item => item.name + item.id);
-      return result['John1'].name === 'John' &&
-        result['Jane2'].name === 'Jane';
-    }, 'createLookupHash works with key function');
+      tester.assert('works with key function', () => {
+        const result = Utils.createLookupHash(arrayForLookup, item => item.name + item.id);
+        return result['John1'].name === 'John' &&
+          result['Jane2'].name === 'Jane';
+      });
+    });
   }
 
   return {
