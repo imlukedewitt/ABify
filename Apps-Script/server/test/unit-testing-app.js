@@ -64,6 +64,31 @@ let UnitTestingApp = (function () {
     }
 
     /**
+     * Runs a function if testing is enabled and the environment is correct
+     * Helpful for running extra functions before or after tests
+     * @param {*} callback
+     * @returns
+     */
+    do(callback) {
+      if (!_enabled.get(this)) return;
+      if (this.isInGas !== this.runningInGas) return;
+      callback();
+    }
+
+    /**
+     * Runs code and tests related to a specific subject
+     * @param {*} subjectName 
+     * @param {*} callback 
+     * @returns 
+     */
+    describe(subjectName, callback) {
+      if (!_enabled.get(this)) return;
+      if (this.isInGas !== this.runningInGas) return;
+      console.log(`\nDescribe: ${subjectName}`);
+      callback();
+    }
+    
+    /**
      * Tests functions that throw error messages
      * @param {Function} callback - the function that you expect to return the error message
      * @param {String} errorMessage - the error message you are expecting
