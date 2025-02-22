@@ -1,5 +1,6 @@
 if (typeof require !== "undefined") {
   MockData = require('../mock-data.js');
+  Spreadsheet = require('./spreadsheet-mock.js');
 }
 
 const PropertiesServiceMock = (() => {
@@ -16,7 +17,4 @@ const PropertiesServiceMock = (() => {
   }
 })();
 
-if (typeof module !== "undefined") {
-  Spreadsheet = require('./spreadsheet-mock.js');
-  module.exports = PropertiesServiceMock;
-}
+if (typeof module !== "undefined") module.exports = PropertiesServiceMock;
