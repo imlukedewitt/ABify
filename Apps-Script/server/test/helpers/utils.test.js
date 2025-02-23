@@ -106,10 +106,7 @@ const UtilsTest = (() => {
     });
   }
 
-  return {
-    // test,
-    run
-  };
+  return { run };
 })();
 
 if (typeof module !== "undefined") {

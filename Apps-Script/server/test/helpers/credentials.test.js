@@ -90,9 +90,7 @@ const CredentialsTest = (() => {
     });
   }
 
-  return {
-    run
-  };
+  return { run };
 })();
 
 if (typeof module !== "undefined") {

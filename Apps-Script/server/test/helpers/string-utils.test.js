@@ -109,9 +109,7 @@ const StringUtilsTest = (() => {
     });
   }
 
-  return {
-    run
-  };
+  return { run };
 })();
 
 if (typeof module !== "undefined") {
