@@ -10,9 +10,9 @@ const TestRunner = (() => {
     start() {
       const tester = Tester.setup();
 
-      UtilsTest.run();
-      StringUtilsTest.run();
-      CredentialsTest.run();
+      UtilsTest.queue();
+      StringUtilsTest.queue();
+      CredentialsTest.queue();
 
       tester.run();
     }

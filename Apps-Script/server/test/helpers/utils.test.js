@@ -29,7 +29,7 @@ const UtilsTest = (() => {
     { id: 3, name: 'John' }
   ];
 
-  function run() {
+  function queue() {
     runInGas(false);
     tester.printHeader('server/helpers/utils.js');
 
@@ -106,7 +106,7 @@ const UtilsTest = (() => {
     });
   }
 
-  return { run };
+  return { queue };
 })();
 
 if (typeof module !== "undefined") {

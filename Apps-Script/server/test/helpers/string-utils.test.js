@@ -4,7 +4,7 @@ const StringUtilsTest = (() => {
   const trueValues = [true, 'true', 'TRUE', ' true ', 'TRUE ', ' true'];
   const falseValues = [false, 'false', 'FALSE', ' false ', 'FALSE ', ' false'];
 
-  function run() {
+  function queue() {
     runInGas(false);
     printHeader('server/helpers/string-utils.js');
 
@@ -109,7 +109,7 @@ const StringUtilsTest = (() => {
     });
   }
 
-  return { run };
+  return { queue };
 })();
 
 if (typeof module !== "undefined") {

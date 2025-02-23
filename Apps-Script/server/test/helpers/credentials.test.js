@@ -1,5 +1,5 @@
 const CredentialsTest = (() => {
-  function run() {
+  function queue() {
     runInGas(false);
     printHeader('server/helpers/credentials.js');
 
@@ -90,7 +90,7 @@ const CredentialsTest = (() => {
     });
   }
 
-  return { run };
+  return { queue };
 })();
 
 if (typeof module !== "undefined") {
