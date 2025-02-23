@@ -1,94 +1,116 @@
-const TestStringUtils = (() => {
+const StringUtilsTest = (() => {
   const blankValues = [null, '', ' ', [], '\n', '\t', '\r'];
   const nonBlankValues = ['a', 0, 1, {}, [1]];
   const trueValues = [true, 'true', 'TRUE', ' true ', 'TRUE ', ' true'];
   const falseValues = [false, 'false', 'FALSE', ' false ', 'FALSE ', ' false'];
 
-  function test() {
-    const tester = new UnitTestingApp();
+  function run() {
+    runInGas(false);
+    printHeader('server/helpers/string-utils.js');
 
-    tester.runInGas(false);
-    tester.printHeader('StringUtils');
-
-    tester.describe('isBlank()', () => {
-      tester.assert('it returns true for blank values', () => {
-        return blankValues.every(StringUtils.isBlank);
-      });
-
-      tester.assert('it returns false for non-blank values', () => {
-        return nonBlankValues.every(value => !StringUtils.isBlank(value));
-      });
-    });
-
-    tester.describe('isPresent()', () => {
-      tester.assert('it returns true for non-blank values', () => {
-        return nonBlankValues.every(StringUtils.isPresent);
-      });
-
-      tester.assert('it returns false for blank values', () => {
-        return blankValues.every(value => !StringUtils.isPresent(value));
-      });
-    });
-
-    tester.describe('isTrue()', () => {
-      tester.assert('it returns true for true values', () => {
-        return trueValues.every(StringUtils.isTrue);
-      });
-
-      tester.assert('it returns false for false values', () => {
-        return falseValues.every(value => !StringUtils.isTrue(value));
-      });
-    });
-
-    tester.describe('isFalse()', () => {
-      tester.assert('it returns true for false values', () => {
-        return falseValues.every(StringUtils.isFalse);
-      });
-
-      tester.assert('it returns false for true values', () => {
-        return trueValues.every(value => !StringUtils.isFalse(value));
-      });
-    });
-
-    // testsForIsBoolean(tester);
-    tester.describe('isBoolean()', () => {
-      tester.assert('it returns true for true values', () => {
-        return trueValues.every(StringUtils.isBoolean);
-      });
-
-      tester.assert('it returns true for false values', () => {
-        return falseValues.every(StringUtils.isBoolean);
-      });
-
-      tester.assert('it returns false for blank values', () => {
-        return blankValues.every(value => !StringUtils.isBoolean(value));
-      });
-
-      tester.assert('it returns false for non-boolean values', () => {
-        return nonBlankValues.every(value => !StringUtils.isBoolean(value));
-      });
-    });
-
-    // testsForGenerateString(tester);
-    tester.describe('generateString()', () => {
-      tester.assert('generateString returns an 8-char string by default', () => {
-        return Array.from({ length: 100 }).every(() => {
-          const str = StringUtils.generateString();
-          return typeof str === 'string' && str.length === 8;
+    describe('isBlank()', () => {
+      it('returns true for blank values', () => {
+        blankValues.forEach(value => {
+          expect(StringUtils.isBlank(value)).toBeTruthy();
         });
       });
 
-      tester.assert('generateString returns a string of the specified length', () => {
-        return Array.from({ length: 100 }).every(() => {
+      it('returns false for non-blank values', () => {
+        nonBlankValues.forEach(value => {
+          expect(StringUtils.isBlank(value)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('isPresent()', () => {
+      it('returns true for non-blank values', () => {
+        nonBlankValues.forEach(value => {
+          expect(StringUtils.isPresent(value)).toBeTruthy();
+        });
+      });
+
+      it('returns false for blank values', () => {
+        blankValues.forEach(value => {
+          expect(StringUtils.isPresent(value)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('isTrue()', () => {
+      it('returns true for true values', () => {
+        trueValues.forEach(value => {
+          expect(StringUtils.isTrue(value)).toBeTruthy();
+        });
+      });
+
+      it('returns false for false values', () => {
+        falseValues.forEach(value => {
+          expect(StringUtils.isTrue(value)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('isFalse()', () => {
+      it('returns true for false values', () => {
+        falseValues.forEach(value => {
+          expect(StringUtils.isFalse(value)).toBeTruthy();
+        });
+      });
+
+      it('returns false for true values', () => {
+        trueValues.forEach(value => {
+          expect(StringUtils.isFalse(value)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('isBoolean()', () => {
+      it('returns true for true values', () => {
+        trueValues.forEach(value => {
+          expect(StringUtils.isBoolean(value)).toBeTruthy();
+        });
+      });
+
+      it('returns true for false values', () => {
+        falseValues.forEach(value => {
+          expect(StringUtils.isBoolean(value)).toBeTruthy();
+        });
+      });
+
+      it('returns false for blank values', () => {
+        blankValues.forEach(value => {
+          expect(StringUtils.isBoolean(value)).toBeFalsy();
+        });
+      });
+
+      it('returns false for non-boolean values', () => {
+        nonBlankValues.forEach(value => {
+          expect(StringUtils.isBoolean(value)).toBeFalsy();
+        });
+      });
+    });
+
+    describe('generateString()', () => {
+      it('returns an 8-char string by default', () => {
+        Array.from({ length: 100 }).forEach(() => {
+          const str = StringUtils.generateString();
+          expect(typeof str).toEqual('string');
+          expect(str.length).toEqual(8);
+        });
+      });
+
+      it('returns a string of the specified length', () => {
+        Array.from({ length: 100 }).forEach(() => {
           const str = StringUtils.generateString(16);
-          return typeof str === 'string' && str.length === 16;
+          expect(typeof str).toEqual('string');
+          expect(str.length).toEqual(16);
         });
       });
     });
   }
 
   return {
-    test
+    run
   };
 })();
 
@@ -96,5 +118,5 @@ if (typeof module !== "undefined") {
   UnitTestingApp = require('../unit-testing-app.js');
   MockData = require('../mock-data.js');
   StringUtils = require('../../helpers/string-utils.js');
-  module.exports = TestStringUtils;
+  module.exports = StringUtilsTest;
 }

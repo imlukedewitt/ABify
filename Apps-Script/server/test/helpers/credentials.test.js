@@ -1,92 +1,97 @@
-const TestCredentials = (() => {
-  function test() {
-    const tester = new UnitTestingApp();
+const CredentialsTest = (() => {
+  function run() {
+    runInGas(false);
+    printHeader('server/helpers/credentials.js');
 
-    tester.runInGas(false);
-    tester.printHeader('Credentials');
+    PropertiesService.getUserProperties().setProperty('credentials', JSON.stringify({
+      '0987654321-abify debug credentials': {
+        subdomain: 'subdomain',
+        domain: 'domain.com',
+        apiKey: '1234567890',
+        spreadsheetID: '0987654321'
+      }
+    }));
 
-    tester.do(() => {
-      PropertiesService.getUserProperties().setProperty('credentials', JSON.stringify({
-        '0987654321-abify debug credentials': {
+    describe('getCredentialsForSite()', () => {
+      it('returns credentials when spreadsheet ID is provided', () => {
+        const result = Credentials.getCredentialsForSite('abify debug credentials', '0987654321');
+        expect(result).toEqualObject({
           subdomain: 'subdomain',
           domain: 'domain.com',
           apiKey: '1234567890',
           spreadsheetID: '0987654321'
-        }
-      }));
-    })
+        });
+      });
 
-    tester.assert('it returns credentials by site name when spreadsheed ID is provided', () => {
-      const result = Credentials.getCredentialsForSite('abify debug credentials', '0987654321');
-      return typeof result === 'object' &&
-        result.subdomain === 'subdomain' &&
-        result.domain === 'domain.com' &&
-        result.apiKey === '1234567890' &&
-        result.spreadsheetID === '0987654321';
-    });
+      it('returns null if no credentials are found', () => {
+        expect(Credentials.getCredentialsForSite('abify debug credentials', '1234567890')).toBeNull();
+      });
 
-    tester.assert('it returns null if no credentials are found', () =>
-      Credentials.getCredentialsForSite('abify debug credentials', '1234567890') === null);
-
-    tester.assert('it uses the current spreadsheet if an ID not provided', () => {
-      const result = Credentials.getCredentialsForSite('abify debug credentials');
-      return typeof result === 'object' &&
-        result.subdomain === 'subdomain' &&
-        result.domain === 'domain.com' &&
-        result.apiKey === '1234567890' &&
-        result.spreadsheetID === '0987654321';
-    });
-
-    tester.assert('it stores credentials', () => {
-      Credentials.storeCredentials('example site', 'example', 'example.com', '1234');
-      const result = Credentials.getCredentialsForSite('example site');
-      return tester.areObjectsEqual(result, {
-        subdomain: 'example',
-        domain: 'example.com',
-        apiKey: '1234',
-        spreadsheetID: Spreadsheet.getID(),
-        siteName: 'example site'
+      it('uses the current spreadsheet if an ID not provided', () => {
+        const result = Credentials.getCredentialsForSite('abify debug credentials');
+        expect(result).toEqualObject({
+          subdomain: 'subdomain',
+          domain: 'domain.com',
+          apiKey: '1234567890',
+          spreadsheetID: '0987654321'
+        });
       });
     });
 
-    tester.assert('it deletes credentials', () => {
-      Credentials.storeCredentials('example site', 'example', 'example.com', '1234');
-      Credentials.deleteCredentials('example site');
-      return Credentials.getCredentialsForSite('example site') === null;
-    });
-
-    tester.assert('it returns the domain', () => {
-      const result = Credentials.getDomain('abify debug credentials', '0987654321');
-      return result === 'domain.com';
-    });
-
-    tester.assert('it lists sites', () => {
-      const result = Credentials.listSites();
-      return result.length === 1 && tester.areObjectsEqual(result[0], {
-        subdomain: 'subdomain',
-        domain: 'domain.com',
-        apiKey: '1234567890',
-        spreadsheetID: '0987654321',
-        siteName: 'abify debug credentials'
+    describe('storeCredentials()', () => {
+      it('stores credentials correctly', () => {
+        Credentials.storeCredentials('example site', 'example', 'example.com', '1234');
+        const result = Credentials.getCredentialsForSite('example site');
+        expect(result).toEqualObject({
+          subdomain: 'example',
+          domain: 'example.com',
+          apiKey: '1234',
+          spreadsheetID: Spreadsheet.getID(),
+          siteName: 'example site'
+        });
       });
     });
 
-    tester.assert('is return ABify base URL', () => {
-      const result = Credentials.baseUrl.abify;
-      return result === 'https://abify.onrender.com';
+    describe('deleteCredentials()', () => {
+      it('deletes credentials correctly', () => {
+        Credentials.deleteCredentials('example site');
+        expect(Credentials.getCredentialsForSite('example site')).toBeNull();
+      });
     });
 
-    tester.assert('it returns ABify credentials', () => {
-      Credentials.saveABifyCredentials('username', 'password');
-      return tester.areObjectsEqual(
-        Credentials.ABifyCredentials(),
-        { username: 'username', password: 'password' }
-      );
+    describe('utility methods', () => {
+      it('returns the domain', () => {
+        expect(Credentials.getDomain('abify debug credentials', '0987654321')).toEqual('domain.com');
+      });
+
+      it('lists sites', () => {
+        const result = Credentials.listSites();
+        expect(result.length).toEqual(1);
+        expect(result[0]).toEqualObject({
+          subdomain: 'subdomain',
+          domain: 'domain.com',
+          apiKey: '1234567890',
+          spreadsheetID: '0987654321',
+          siteName: 'abify debug credentials'
+        });
+      });
+
+      it('returns ABify base URL', () => {
+        expect(Credentials.baseUrl.abify).toEqual('https://abify.onrender.com');
+      });
+
+      it('handles ABify credentials', () => {
+        Credentials.saveABifyCredentials('username', 'password');
+        expect(Credentials.ABifyCredentials()).toEqualObject({
+          username: 'username',
+          password: 'password'
+        });
+      });
     });
   }
 
   return {
-    test
+    run
   };
 })();
 
@@ -94,5 +99,5 @@ if (typeof module !== "undefined") {
   UnitTestingApp = require('../unit-testing-app.js');
   Credentials = require('../../helpers/credentials.js');
   PropertiesService = require('../mocks/properties-service-mock.js');
-  module.exports = TestCredentials;
+  module.exports = CredentialsTest;
 }

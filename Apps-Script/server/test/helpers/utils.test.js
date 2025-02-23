@@ -1,4 +1,4 @@
-const TestUtils = (() => {
+const UtilsTest = (() => {
   const sampleArray = [
     ['Name', 'Age', 'City'],
     ['John', 25, 'NY'],
@@ -29,85 +29,91 @@ const TestUtils = (() => {
     { id: 3, name: 'John' }
   ];
 
-  function test() {
-    const tester = new UnitTestingApp();
+  function run() {
+    runInGas(false);
+    tester.printHeader('server/helpers/utils.js');
 
-    tester.runInGas(false);
-    tester.printHeader('Utils');
-
-    tester.describe('convert2DArrayToObj()', () => {
-      tester.assert('converts array to object correctly', () => {
+    describe('convert2DArrayToObj()', () => {
+      it('converts array to object correctly', () => {
         const result = Utils.convert2DArrayToObj(sampleArray);
-        return result.length === 2 &&
-          result[0].name === 'John' &&
-          result[1].city === 'LA';
+        expect(result.length).toEqual(2);
+        expect(result[0].name).toEqual('John');
+        expect(result[1].city).toEqual('LA');
       });
 
-      tester.assert('handles whitespace in headers', () => {
+      it('trims whitespace in headers', () => {
         const arrayWithSpaces = [
-          [' Name ', ' Age ', ' City '],
+          [' name ', ' Age ', ' City '],
           ['John', 25, 'NY']
         ];
         const result = Utils.convert2DArrayToObj(arrayWithSpaces);
-        return result[0].name === 'John';
+        expect(result[0].name).toEqual('John');
+      });
+
+      it('lowercases headers', () => {
+        const arrayWithSpaces = [
+          ['Name', 'Age', 'City'],
+          ['John', 25, 'NY']
+        ];
+        const result = Utils.convert2DArrayToObj(arrayWithSpaces);
+        expect(result[0]).toEqualObject({ name: 'John', age: 25, city: 'NY' });
       });
     });
 
-    tester.describe('convertObjTo2DArray()', () => {
-      tester.assert('converts object to array with headers', () => {
+    describe('convertObjTo2DArray()', () => {
+      it('converts object to array with headers', () => {
         const result = Utils.convertObjTo2DArray(sampleObject);
-        return result.length === 3 &&
-          result[0].includes('name') &&
-          result[1].includes('John');
+        expect(result.length).toEqual(3);
+        expect(result[0]).toContain('name');
+        expect(result[1]).toContain('John');
       });
 
-      tester.assert('respects includeHeaders parameter', () => {
+      it('respects includeHeaders parameter', () => {
         const result = Utils.convertObjTo2DArray(sampleObject, false);
-        return result.length === 2 &&
-          !result[0].includes('name');
+        expect(result.length).toEqual(2);
+        expect(result[0]).not.toContain('name');
       });
     });
 
-    tester.describe('trimObj()', () => {
-      tester.assert('removes empty values and maintains structure', () => {
+    describe('trimObj()', () => {
+      it('recursively removes empty values', () => {
         const result = Utils.trimObj(messyObject);
-        return !result.hasOwnProperty('empty') &&
-          !result.hasOwnProperty('nullValue') &&
-          !result.hasOwnProperty('emptyArray') &&
-          !result.hasOwnProperty('emptyObject') &&
-          !result.nested.hasOwnProperty('empty') &&
-          !result.nested.hasOwnProperty('nullValue');
+        expect(result).toEqualObject({
+          name: 'John',
+          nested: { value: 'test' }
+        });
       });
     });
 
-    tester.describe('createLookupHash()', () => {
-      tester.assert('creates single-item lookup', () => {
+    describe('createLookupHash()', () => {
+      it('creates single-item lookup', () => {
         const result = Utils.createLookupHash(arrayForLookup, 'id');
-        return Object.keys(result).length === 3 &&
-          result[1].name === 'John';
+        expect(Object.keys(result).length).toEqual(3);
+        expect(result[1].name).toEqual('John');
       });
 
-      tester.assert('creates multi-item lookup', () => {
+      it('creates multi-item lookup', () => {
         const result = Utils.createLookupHash(arrayForLookup, 'name', false);
-        return result['John'].length === 2 &&
-          result['Jane'].length === 1;
+        expect(result['John'].length).toEqual(2);
+        expect(result['Jane'].length).toEqual(1);
       });
 
-      tester.assert('works with key function', () => {
+      it('works with key function', () => {
         const result = Utils.createLookupHash(arrayForLookup, item => item.name + item.id);
-        return result['John1'].name === 'John' &&
-          result['Jane2'].name === 'Jane';
+        expect(result['John1'].name).toEqual('John');
+        expect(result['Jane2'].name).toEqual('Jane');
       });
     });
   }
 
   return {
-    test
+    // test,
+    run
   };
 })();
 
 if (typeof module !== "undefined") {
   UnitTestingApp = require('../unit-testing-app.js');
   Utils = require('../../helpers/utils.js');
-  module.exports = TestUtils;
+  module.exports = UtilsTest;
 }
