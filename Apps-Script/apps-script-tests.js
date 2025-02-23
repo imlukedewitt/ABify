@@ -7,6 +7,10 @@ function gasTests() {
   TestRunner.start();
 }
 
+function breakPoint() {
+  (() => {})();
+}
+
 function debugStoreCredentials() {
   Credentials.storeCredentials(
     'abify debug credentials',
