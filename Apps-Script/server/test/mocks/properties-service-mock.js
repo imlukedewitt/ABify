@@ -1,5 +1,5 @@
 if (typeof require !== "undefined") {
-  MockData = require('../mock-data.js');
+  MockData = require('../../lib/mock-data.js');
   Spreadsheet = require('./spreadsheet-mock.js');
 }
 
