@@ -75,6 +75,14 @@ const TestCredentials = (() => {
       const result = Credentials.baseUrl.abify;
       return result === 'https://abify.onrender.com';
     });
+
+    tester.assert('it returns ABify credentials', () => {
+      Credentials.saveABifyCredentials('username', 'password');
+      return tester.areObjectsEqual(
+        Credentials.ABifyCredentials(),
+        { username: 'username', password: 'password' }
+      );
+    });
   }
 
   return {
