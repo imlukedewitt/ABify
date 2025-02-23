@@ -3,16 +3,16 @@ const CredentialsTest = (() => {
     runInGas(false);
     printHeader('server/helpers/credentials.js');
 
-    PropertiesService.getUserProperties().setProperty('credentials', JSON.stringify({
-      '0987654321-abify debug credentials': {
-        subdomain: 'subdomain',
-        domain: 'domain.com',
-        apiKey: '1234567890',
-        spreadsheetID: '0987654321'
-      }
-    }));
-
     describe('getCredentialsForSite()', () => {
+      PropertiesService.getUserProperties().setProperty('credentials', JSON.stringify({
+        '0987654321-abify debug credentials': {
+          subdomain: 'subdomain',
+          domain: 'domain.com',
+          apiKey: '1234567890',
+          spreadsheetID: '0987654321'
+        }
+      }));
+
       it('returns credentials when spreadsheet ID is provided', () => {
         const result = Credentials.getCredentialsForSite('abify debug credentials', '0987654321');
         expect(result).toEqualObject({
