@@ -110,7 +110,6 @@ const UtilsTest = (() => {
 })();
 
 if (typeof module !== "undefined") {
-  UnitTestingApp = require('../unit-testing-app.js');
   Utils = require('../../helpers/utils.js');
   module.exports = UtilsTest;
 }

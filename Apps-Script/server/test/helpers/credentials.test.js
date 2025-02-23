@@ -94,7 +94,6 @@ const CredentialsTest = (() => {
 })();
 
 if (typeof module !== "undefined") {
-  UnitTestingApp = require('../unit-testing-app.js');
   Credentials = require('../../helpers/credentials.js');
   PropertiesService = require('../mocks/properties-service-mock.js');
   module.exports = CredentialsTest;

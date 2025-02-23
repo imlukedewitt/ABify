@@ -113,7 +113,6 @@ const StringUtilsTest = (() => {
 })();
 
 if (typeof module !== "undefined") {
-  UnitTestingApp = require('../unit-testing-app.js');
   MockData = require('../../lib/mock-data.js');
   StringUtils = require('../../helpers/string-utils.js');
   module.exports = StringUtilsTest;
