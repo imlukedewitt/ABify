@@ -3,11 +3,14 @@
 // For convenience, it contains a few misc debugging functions
 // to be run from the web UI
 
-function gasTests() {
+// Run online unit tests
+function runTests() {
   TestRunner.start();
 }
 
-function breakPoint() {
+// Helper to make it more convenient to set breakpoints
+// for debugging in the web UI
+function bp() {
   (() => {})();
 }
 
