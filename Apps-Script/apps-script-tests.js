@@ -8,8 +8,7 @@ function runTests() {
   TestRunner.start();
 }
 
-// Helper to make it more convenient to set breakpoints
-// for debugging in the web UI
+// Provides a convenient breakpoint location for debugging in the Apps Script web editor.
 function bp() {
   (() => {})();
 }
