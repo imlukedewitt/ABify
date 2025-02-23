@@ -4,7 +4,7 @@
 // to be run from the web UI
 
 function gasTests() {
-  TestSuite.run();
+  TestRunner.start();
 }
 
 function debugStoreCredentials() {
