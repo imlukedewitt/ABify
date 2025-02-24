@@ -7,15 +7,18 @@ const Credentials = (() => {
   function getCredentialsForSite(siteName, spreadsheetID = null) {
     if (!spreadsheetID) { spreadsheetID = Spreadsheet.getID(); }
     let creds = getCredentials();
-    return creds[`${spreadsheetID}-${siteName}`];
+    return creds[`${spreadsheetID}-${siteName}`] || null;
   }
 
   function listSites(spreadsheetID = null) {
     if (!spreadsheetID) { spreadsheetID = Spreadsheet.getID(); }
     let creds = getCredentials();
     return Object.keys(creds)
-      .filter(cred => cred.spreadsheetID === spreadsheetID)
-      .map(cred => { cred.siteName, cred.subdomain, cred.domain })
+      .filter(key => key.includes(spreadsheetID))
+      .map(key => {
+        let siteName = key.split('-')[1];
+        return { ...creds[key], siteName };
+      });
   }
 
   function storeCredentials(siteName, subdomain, domain, apiKey, spreadsheetID = null) {
@@ -81,3 +84,5 @@ const Credentials = (() => {
     baseUrl
   }
 })();
+
+if (typeof module !== 'undefined') module.exports = Credentials;

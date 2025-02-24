@@ -1,4 +1,4 @@
-StringUtils = (() => {
+const StringUtils = (() => {
   function isBlank(thing) {
     return thing === null || String(thing).trim() === '';
   }
@@ -36,3 +36,5 @@ StringUtils = (() => {
     generateString
   }
 })();
+
+if (typeof module !== 'undefined') module.exports = StringUtils;

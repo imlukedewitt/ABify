@@ -23,7 +23,7 @@ const Utils = (() => {
   // recursively remove empty strings, null, empty arrays, and empty objects
   function trimObj(obj) {
     return Object.entries(obj).reduce((newObj, [key, value]) => {
-      const cleanedValue = (typeof value === 'object' && value !== null && !Array.isArray(value)) ? trimPayload(value) : value;
+      const cleanedValue = (typeof value === 'object' && value !== null && !Array.isArray(value)) ? trimObj(value) : value;
 
       if (cleanedValue !== null && cleanedValue !== '' && (!Array.isArray(cleanedValue) || cleanedValue.length > 0) && (typeof cleanedValue !== 'object' || Object.keys(cleanedValue).length > 0)) {
         newObj[key] = cleanedValue;
@@ -55,3 +55,5 @@ const Utils = (() => {
     createLookupHash
   }
 })();
+
+if (typeof module !== 'undefined') module.exports = Utils;
