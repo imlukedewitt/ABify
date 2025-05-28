@@ -90,7 +90,7 @@ class Importer
 
   def queue_rows
     @data.rows.each do |row|
-      queue_buffer_step(row)
+      queue_buffer_step(row) unless row.original_data['status'] == 'Success'
     end
   end
 

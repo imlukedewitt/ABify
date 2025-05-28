@@ -13,7 +13,7 @@ class CSVWriter
   end
 
   def write_import_results(results)
-    headers = ['Status']
+    headers = ['status']
     response_steps = gather_response_steps(results[:rows])
     headers.concat(response_steps.map { |step| "Response (#{step})" })
     data_keys = gather_data_keys(results[:rows])
@@ -45,7 +45,7 @@ class CSVWriter
   def build_row(headers, row, response_steps)
     row_data = row[:data].dup
     status = row[:errors].empty? ? 'Success' : 'Error'
-    row_data['Status'] = status
+    row_data['status'] = status
 
     response_steps.each do |step|
       error = row[:errors].find { |e| e[:step] == step }
