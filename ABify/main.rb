@@ -5,10 +5,11 @@ require 'json'
 require 'pry'
 require 'sinatra'
 require_relative 'controllers/importer_controller'
+require_relative 'config/routes'
 
 # sinatra setup
 set :bind, '0.0.0.0'
-port = ENV['PORT'] || '8080'
+port = ENV['PORT'] || '8079'
 set :port, port
 enable :sessions
 set :session_store, Rack::Session::Pool
@@ -22,3 +23,4 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
 end
 
 use ImporterController
+use Routes
