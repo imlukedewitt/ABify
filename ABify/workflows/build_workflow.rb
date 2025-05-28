@@ -6,6 +6,7 @@ require_relative 'components/create_components'
 require_relative 'subscriptions/create_subscriptions'
 require_relative 'subscriptions/create_metered_usage'
 require_relative 'subscriptions/create_allocations'
+require_relative 'subscriptions/create_ebb_usage'
 
 # Simple workflow initializer
 module BuildWorkflow
@@ -16,7 +17,8 @@ module BuildWorkflow
     'createComponents' => CreateComponents,
     'createSubscriptions' => CreateSubscriptions,
     'createMeteredUsage' => CreateMeteredUsage,
-    'createAllocations' => CreateAllocations
+    'createAllocations' => CreateAllocations,
+    'createEbbUsage' => CreateEbbUsage
   }.freeze
 
   def self.for(name)
