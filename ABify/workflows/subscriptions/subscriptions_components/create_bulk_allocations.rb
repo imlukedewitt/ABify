@@ -61,7 +61,7 @@ class CreateBulkAllocations < Workflow
     while present?(row["component handle #{index}"]) || present?(row["component id #{index}"])
       allocation = {
         component_id: component_id(row, index),
-        quantity: row["quantity #{index}"].to_i,
+        quantity: row["quantity #{index}"],
         memo: row["memo #{index}"],
         price_point: price_point(row, index)
       }
