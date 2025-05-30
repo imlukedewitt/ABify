@@ -38,6 +38,7 @@ class Importer
     @status = 'complete'
     @completed_at = Time.now
     @keystore.set(@id, summary)
+  ensure
     CSVWriter.new(@id).write_import_results(summary)
     puts "\n\ngreat job"
   end
