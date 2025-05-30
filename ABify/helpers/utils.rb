@@ -2,14 +2,24 @@
 
 # Module for misc template helper functions
 module Utils
+  CRUSHABLE = [nil, [], {}, ""].freeze
+
   # recursively remove empty values from a payload
-  def trim_payload(hash)
-    hash.each_with_object({}) do |(k, v), new_hash|
-      cleaned_value = v.is_a?(Hash) ? trim_payload(v) : v
+  # insprired by https://stackoverflow.com/a/65082546
+  def trim_payload(obj)
+    case obj
+    when Hash
+      obj.each_with_object({}) do |(k, v), new_hash|
+        v = trim_payload(v)
+        next if CRUSHABLE.include?(v) || (v.is_a?(String) && v.strip.empty?)
 
-      next if cleaned_value.nil? || cleaned_value.to_s.strip == '' || cleaned_value == [] || cleaned_value == {}
-
-      new_hash[k] = cleaned_value
+        new_hash[k] = v
+      end
+    when Array
+      obj.map { |e| trim_payload(e) }
+         .reject { |e| CRUSHABLE.include?(e) || (e.is_a?(String) && e.strip.empty?) }
+    else
+      obj
     end
   end
 
