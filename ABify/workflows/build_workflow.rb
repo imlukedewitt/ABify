@@ -4,9 +4,9 @@ require_relative 'customers/create_customers'
 require_relative 'customers/delete_customers'
 require_relative 'components/create_components'
 require_relative 'subscriptions/create_subscriptions'
-require_relative 'subscriptions/create_metered_usage'
-require_relative 'subscriptions/create_allocations'
-require_relative 'subscriptions/create_ebb_usage'
+require_relative 'subscriptions/subscriptions_components/create_metered_usage'
+require_relative 'subscriptions/subscriptions_components/create_allocations'
+require_relative 'subscriptions/subscriptions_components/create_bulk_allocations'
 
 # Simple workflow initializer
 module BuildWorkflow
@@ -18,7 +18,7 @@ module BuildWorkflow
     'createSubscriptions' => CreateSubscriptions,
     'createMeteredUsage' => CreateMeteredUsage,
     'createAllocations' => CreateAllocations,
-    'createEbbUsage' => CreateEbbUsage
+    'createBulkAllocations' => CreateBulkAllocations
   }.freeze
 
   def self.for(name)

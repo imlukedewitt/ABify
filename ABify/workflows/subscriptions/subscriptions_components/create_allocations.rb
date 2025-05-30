@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'uri'
-require_relative '../workflow'
-require_relative '../../helpers/string_utils'
-require_relative '../../helpers/utils'
-require_relative '../../models/step'
+require_relative '../../workflow'
+require_relative '../../../helpers/string_utils'
+require_relative '../../../helpers/utils'
+require_relative '../../../models/step'
 
 # builds the Create Allocation workflow
 class CreateAllocations < Workflow
@@ -44,7 +44,7 @@ class CreateAllocations < Workflow
         payload = {
           allocation: {
             quantity: row['quantity'],
-            price_point: price_point(row),
+            price_point_id: price_point(row),
             memo: row['memo']
           }
         }
@@ -52,7 +52,7 @@ class CreateAllocations < Workflow
       },
       response_key: 'allocation id',
       response_val: ->(result) { result['allocation']['id'] },
-      response_text: lambda { |result, config|
+      response_text: lambda { |result, _config|
         "allocation created for subscription #{result&.dig('allocation', 'subscription_id')}"
       }
     }

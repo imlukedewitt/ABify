@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'uri'
-require_relative '../workflow'
-require_relative '../../helpers/string_utils'
-require_relative '../../helpers/utils'
-require_relative '../../models/step'
+require_relative '../../workflow'
+require_relative '../../../helpers/string_utils'
+require_relative '../../../helpers/utils'
+require_relative '../../../models/step'
 
 # builds the Create Metered Usage workflow
 class CreateMeteredUsage < Workflow
