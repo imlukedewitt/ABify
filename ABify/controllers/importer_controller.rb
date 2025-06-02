@@ -7,6 +7,7 @@ require_relative '../helpers/string_utils'
 require_relative '../models/config'
 require_relative '../models/data_sources/csv_source'
 require_relative '../models/data_sources/json_source'
+require_relative '../models/data_sources/json_file_source'
 require_relative '../models/data_sources/mock_data_source'
 require_relative '../models/importer'
 require_relative '../workflows/build_workflow'
@@ -97,7 +98,8 @@ class ImporterController < Sinatra::Base
     {
       'csv' => method(:load_csv_data),
       'json' => method(:load_json_data),
-      'mock' => method(:load_mock_data)
+      'mock' => method(:load_mock_data),
+      'json_file' => method(:load_json_file_data)
     }.fetch(@request.env['HTTP_SOURCE_TYPE']).call
   rescue KeyError
     raise 'Invalid source type'
@@ -111,6 +113,13 @@ class ImporterController < Sinatra::Base
 
   def load_json_data
     JsonData.new(@request.body.read)
+  end
+
+  def load_json_file_data
+    file_path = @request.env['HTTP_FILE_PATH']
+    JsonFileSource.new(file_path)
+  rescue StandardError => e
+    raise "Error loading JSON file: #{e.message}"
   end
 
   def load_mock_data
