@@ -111,13 +111,21 @@ class ImporterController < Sinatra::Base
   end
 
   def load_csv_data
-    CsvData.new(@request.env['HTTP_FILE_PATH'])
+    if params[:file] && params[:file][:tempfile]
+      CsvData.new(params[:file][:tempfile])
+    else
+      CsvData.new(@request.env['HTTP_FILE_PATH'])
+    end
   rescue StandardError => e
     raise "Error loading CSV: #{e.message}"
   end
 
   def load_json_data
-    JsonData.new(@request.body.read)
+    if params[:file] && params[:file][:tempfile]
+      JsonData.new(params[:file][:tempfile])
+    else
+      JsonData.new(@request.body.read)
+    end
   end
 
   def load_json_file_data

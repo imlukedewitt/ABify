@@ -29,6 +29,7 @@ RSpec.describe Importer do
     allow(row).to receive(:data).and_return({})
     allow(row).to receive(:index).and_return(1)
     allow(row).to receive(:status).and_return(nil)
+    allow(row).to receive(:original_data).and_return({})
     allow(BufferStep).to receive(:new).and_return(buffer_step)
     allow(buffer_step).to receive(:enqueue)
     allow($stdout).to receive(:write) # suppress 'puts' output

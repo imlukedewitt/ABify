@@ -82,6 +82,46 @@ RSpec.describe ImporterController do
     expect(last_response.body).to include('Error loading CSV: CSV load error')
   end
 
+  it 'starts an import with a CSV file upload' do
+    csv_tempfile = Tempfile.new('test.csv')
+    csv_tempfile.write("header1,header2\nvalue1,value2\n")
+    csv_tempfile.rewind
+
+    headers = http_headers.merge('HTTP_SOURCE_TYPE' => 'csv')
+    file = Rack::Test::UploadedFile.new(csv_tempfile.path, 'text/csv')
+
+    allow(CsvData).to receive(:new).and_return(instance_double('CsvData'))
+
+    post '/start', { file: file }, headers
+
+    expect(last_response).to be_ok
+    expect(Importer).to have_received(:new).once
+    expect(CsvData).to have_received(:new).once
+
+    csv_tempfile.close
+    csv_tempfile.unlink
+  end
+
+  it 'starts an import with a JSON file upload' do
+    json_tempfile = Tempfile.new('test.json')
+    json_tempfile.write('[{"foo":"bar"}]')
+    json_tempfile.rewind
+
+    headers = http_headers.merge('HTTP_SOURCE_TYPE' => 'json')
+    file = Rack::Test::UploadedFile.new(json_tempfile.path, 'application/json')
+
+    allow(JsonData).to receive(:new).and_return(instance_double('JsonData'))
+
+    post '/start', { file: file }, headers
+
+    expect(last_response).to be_ok
+    expect(Importer).to have_received(:new).once
+    expect(JsonData).to have_received(:new).once
+
+    json_tempfile.close
+    json_tempfile.unlink
+  end
+
   it 'returns the import status' do
     time = Time.now
     allow(LocalKeystore.instance).to receive(:get).and_return(
