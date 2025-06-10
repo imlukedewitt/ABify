@@ -32,7 +32,8 @@ class ImporterController < Sinatra::Base
     end
 
     workflow = BuildWorkflow.for(request.env['HTTP_TEMPLATE'])
-    importer = Importer.new(config, workflow, data)
+    max_concurrency = (request.env['HTTP_MAX_CONCURRENCY'] || 25).to_i
+    importer = Importer.new(config, workflow, data, max_concurrency: max_concurrency)
 
     Thread.new do
       importer.start

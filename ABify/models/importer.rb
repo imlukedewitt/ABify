@@ -16,11 +16,12 @@ class Importer
 
   attr_reader :status, :id, :data
 
-  def initialize(config, workflow, data)
+  def initialize(config, workflow, data, max_concurrency: 25)
     @config = config
     @config.row_count = data.rows.count
     @workflow = workflow
     @data = data
+    @max_concurrency = max_concurrency
     setup_id_and_logger
     setup_hydra
     setup_status_and_time
@@ -70,7 +71,7 @@ class Importer
   end
 
   def setup_hydra
-    @hydra = Typhoeus::Hydra.new(max_concurrency: 25)
+    @hydra = Typhoeus::Hydra.new(max_concurrency: @max_concurrency || 25)
   end
 
   def setup_status_and_time
