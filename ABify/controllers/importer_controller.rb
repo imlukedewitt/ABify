@@ -101,6 +101,18 @@ class ImporterController < Sinatra::Base
     send_file file_path
   end
 
+  post '/clear' do
+    import_id = params[:id]
+    content_type :json
+    status 422 unless import_id
+    return { error: 'Import ID required' }.to_json unless import_id
+
+    LocalKeystore.instance.del(import_id)
+    LocalKeystore.instance.del("#{import_id}-stop")
+
+    { message: 'cleared', import_id: import_id }.to_json
+  end
+
   private
 
   def build_config
