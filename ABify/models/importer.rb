@@ -33,6 +33,8 @@ class Importer
     @status = 'running'
     @keystore.set(@id, summary)
 
+    updater = periodic_keystore_update
+
     queue_rows
 
     @hydra.run
@@ -40,8 +42,19 @@ class Importer
     @completed_at = Time.now
     @keystore.set(@id, summary)
   ensure
+    updater&.kill
     CSVWriter.new(@id).write_import_results(summary)
     puts "\n\ngreat job"
+  end
+
+  # Periodically update the keystore with the current summary while running
+  def periodic_keystore_update(interval = 2)
+    Thread.new do
+      while @status == 'running'
+        sleep interval
+        @keystore.set(@id, summary)
+      end
+    end
   end
 
   def summary(data: false, original_data: true)
