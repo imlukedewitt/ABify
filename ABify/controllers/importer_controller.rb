@@ -89,6 +89,18 @@ class ImporterController < Sinatra::Base
     { message: 'stopping', import_id: import_id }.to_json
   end
 
+  get '/download_csv' do
+    import_id = params[:id]
+    halt 422, { error: 'Import ID required' }.to_json unless import_id
+
+    file_path = File.join('out', "#{import_id}.csv")
+    halt 404, { error: 'CSV file not found' }.to_json unless File.exist?(file_path)
+
+    content_type 'text/csv'
+    attachment "#{import_id}.csv"
+    send_file file_path
+  end
+
   private
 
   def build_config
