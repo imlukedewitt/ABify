@@ -65,10 +65,10 @@ RSpec.describe CSVWriter do
     csv_mock = double('CSV')
     allow(CSV).to receive(:open).and_yield(csv_mock)
     expect(csv_mock).to receive(:<<).with(
-      ['Status', 'Response (create customer)', :'first name', :'last name', :email, :'customer id']
+      ['status', 'Response (create customer)', :'first name', :'last name', :email, :'customer id']
     )
     expect(csv_mock).to receive(:<<).with(
-      ['Success', 'https://site.app.com/customers/12345', 'Jon', 'Jon', 'test@example.com', 12345]
+      ['success', 'https://site.app.com/customers/12345', 'Jon', 'Jon', 'test@example.com', 12345]
     )
 
     csv_writer.write_import_results(results)

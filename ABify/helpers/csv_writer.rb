@@ -45,7 +45,7 @@ class CSVWriter
   def build_row(headers, row, response_steps)
     row_data = row[:data].dup
     status = if row[:requests].any?
-               row[:errors].empty? ? 'Success' : 'Error'
+               row[:errors].empty? ? 'success' : 'Error'
              else
                'Skipped'
              end
