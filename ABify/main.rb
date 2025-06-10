@@ -5,7 +5,7 @@ require 'json'
 require 'pry'
 require 'sinatra'
 require_relative 'controllers/importer_controller'
-require_relative 'config/routes'
+# require_relative 'config/routes'
 
 # sinatra setup
 set :bind, '0.0.0.0'
@@ -23,4 +23,4 @@ use Rack::Auth::Basic, 'Restricted Area' do |username, password|
 end
 
 use ImporterController
-use Routes
+# use Routes
