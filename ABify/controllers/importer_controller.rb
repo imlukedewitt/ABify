@@ -56,11 +56,16 @@ class ImporterController < Sinatra::Base
     data = Marshal.load(Marshal.dump(data)) # deep copy to avoid modifying original data
     data[:run_time] = duration(data[:created_at], data[:completed_at])
 
-    remove_original_data = false?(params[:data])
-    if remove_original_data && data && data[:data].is_a?(Array)
-      data[:data] = data[:data].map do |row|
-        row.delete(:data)
-        row
+    include_rows = true?(params[:include_rows])
+    if data && data[:rows].is_a?(Array)
+      if include_rows
+        data[:rows] = data[:rows].map do |row|
+          row.delete(:data) unless true?(params[:data])
+          row.delete(:requests) unless true?(params[:requests])
+          row
+        end
+      else
+        data.delete(:rows)
       end
     end
 
