@@ -1,4 +1,5 @@
-config/*
 log/*
 out/*
 data/*
+config/keyfile.json
+config/.env
