@@ -110,6 +110,8 @@ class ImporterController < Sinatra::Base
     LocalKeystore.instance.del(import_id)
     LocalKeystore.instance.del("#{import_id}-stop")
 
+    GC.start
+
     { message: 'cleared', import_id: import_id }.to_json
   end
 
