@@ -4,6 +4,7 @@ require_relative 'customers/create_customers'
 require_relative 'customers/delete_customers'
 require_relative 'components/create_components'
 require_relative 'subscriptions/create_subscriptions'
+require_relative 'subscriptions/delete_subscriptions'
 require_relative 'subscriptions/subscriptions_components/create_metered_usage'
 require_relative 'subscriptions/subscriptions_components/create_allocations'
 require_relative 'subscriptions/subscriptions_components/create_bulk_allocations'
@@ -17,6 +18,7 @@ module BuildWorkflow
     'deleteCustomers' => DeleteCustomers,
     'createComponents' => CreateComponents,
     'createSubscriptions' => CreateSubscriptions,
+    'deleteSubscriptions' => DeleteSubscriptions,
     'createMeteredUsage' => CreateMeteredUsage,
     'createAllocations' => CreateAllocations,
     'createBulkAllocations' => CreateBulkAllocations,
